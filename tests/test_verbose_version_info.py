@@ -2,36 +2,12 @@
 
 """Tests for `verbose_version_info` package."""
 
-import pytest
-from click.testing import CliRunner
+# import pytest
 
-from verbose_version_info import cli
-
-# from verbose_version_info import verbose_version_info
+from verbose_version_info import __version__
+from verbose_version_info.verbose_version_info import basic_version
 
 
-@pytest.fixture
-def response():
-    """Sample pytest fixture.
-
-    See more at: http://doc.pytest.org/en/latest/fixture.html
-    """
-    # import requests
-    # return requests.get('https://github.com/audreyr/cookiecutter-pypackage')
-
-
-def test_content(response):
+def test_basic_version():
     """Sample pytest test function with the pytest fixture as an argument."""
-    # from bs4 import BeautifulSoup
-    # assert 'GitHub' in BeautifulSoup(response.content).title.string
-
-
-def test_command_line_interface():
-    """Test the CLI."""
-    runner = CliRunner()
-    result = runner.invoke(cli.main)
-    assert result.exit_code == 0
-    assert "verbose_version_info.cli.main" in result.output
-    help_result = runner.invoke(cli.main, ["--help"])
-    assert help_result.exit_code == 0
-    assert "--help  Show this message and exit." in help_result.output
+    assert basic_version("verbose-version-info") == __version__
