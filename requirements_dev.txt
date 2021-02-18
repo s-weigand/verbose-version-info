@@ -4,6 +4,7 @@ wheel>=0.33.6
 # runtime requirements
 # pinned so the bot can create PRs to test with new versions
 Click==7.1.2
+importlib_metadata==3.4.0;python_version < '3.8'
 
 # quality asurence
 black>=19.10b0
