@@ -1,8 +1,9 @@
 # verbose-version-info
 
-[![PyPi Version](https://img.shields.io/pypi/v/verbose_version_info.svg)](https://pypi.org/project/verbose-version-info/)
-[![Conda Version](https://img.shields.io/conda/vn/conda-forge/verbose-version-info.svg)](https://anaconda.org/conda-forge/verbose-version-info)
-[![Supported Python Versions](https://img.shields.io/pypi/pyversions/verbose_version_info.svg)](https://pypi.org/project/verbose-version-info/)
+<!-- [![PyPi Version](https://img.shields.io/pypi/v/verbose_version_info.svg)](https://pypi.org/project/verbose-version-info/) -->
+<!-- [![Conda Version](https://img.shields.io/conda/vn/conda-forge/verbose-version-info.svg)](https://anaconda.org/conda-forge/verbose-version-info) -->
+<!-- [![Supported Python Versions](https://img.shields.io/pypi/pyversions/verbose_version_info.svg)](https://pypi.org/project/verbose-version-info/) -->
+
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 [![Actions Status](https://github.com/s-weigand/verbose-version-info/workflows/Tests/badge.svg)](https://github.com/s-weigand/verbose-version-info/actions)
