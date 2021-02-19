@@ -22,3 +22,5 @@ coverage>=4.5.1
 pytest>=4.0.0
 pytest-cov>=2.5.1
 tox>=3.5.2
+# dummy distributions for testing
+git+https://github.com/s-weigand/git-install-test-distribution.git
