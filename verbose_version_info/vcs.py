@@ -1,8 +1,7 @@
 """Module containing code for version control system retrieval."""
-from __future__ import annotations
-
 import json
 from typing import NamedTuple
+from typing import Union
 
 from verbose_version_info.verbose_version_info import get_distribution
 
@@ -15,7 +14,7 @@ class VcsInfo(NamedTuple):
     vcs: str
 
 
-def get_url_vcs_information(distribution_name: str) -> VcsInfo | None:
+def get_url_vcs_information(distribution_name: str) -> Union[VcsInfo, None]:
     """Extract package information for packages installed from an url.
 
     If the packages was installed using an url 'direct_url.json'

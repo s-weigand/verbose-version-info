@@ -1,5 +1,4 @@
 """Tests for the ``vcs`` module"""
-from __future__ import annotations
 
 try:
     from importlib.metadata import PackagePath

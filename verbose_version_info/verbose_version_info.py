@@ -1,16 +1,13 @@
 """Main module."""
-from __future__ import annotations
 
+from os import PathLike
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import Union
 
 from verbose_version_info import SETTINGS
 from verbose_version_info.metadata_compat import Distribution
 from verbose_version_info.metadata_compat import PackageNotFoundError
 from verbose_version_info.metadata_compat import distribution
-
-if TYPE_CHECKING:
-    from os import PathLike
 
 
 class NotFoundDistribution(Distribution):
@@ -44,7 +41,7 @@ class NotFoundDistribution(Distribution):
         """
         return None
 
-    def locate_file(self, path: PathLike | str) -> PathLike:
+    def locate_file(self, path: Union[PathLike, str]) -> PathLike:
         """Given a path to a file in this distribution, return a path to it.
 
         Just added to satisfy mypy, since the superclass one is
