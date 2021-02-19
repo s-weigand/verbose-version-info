@@ -22,4 +22,19 @@ Generate verbose version information for python packages
 
 ## Features
 
-- TODO
+Implemented
+
+- Basic version retrieval
+- Customizable string for not found version
+- Commit_id for `pip install git+<url>`
+
+TODO
+
+- Reset settings function (mostly notebook showoff)
+- detect `pip install -e` installation
+- commit sha for `pip install -e .` if `.git` exists
+- commit sha for `pip install .` if `.git` exists (possible?)
+- setting formatter: Mapping[str, format_function] (used for sha)
+- extract minimal required versions (useful for CI tests, of the min version)
+- split off cli to an extra
+- add conda support
