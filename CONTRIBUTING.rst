@@ -62,7 +62,7 @@ Ready to contribute? Here's how to set up ``verbose_version_info`` for local dev
 1. Fork the ``verbose-version-info`` repo on GitHub.
 2. Clone your fork locally::
 
-    $ git clone git@github.com:your_name_here/verbose_version_info.git
+    $ git clone --recursive git@github.com:your_name_here/verbose_version_info.git
 
 3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
 
