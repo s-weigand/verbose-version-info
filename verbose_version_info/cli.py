@@ -1,7 +1,14 @@
 """Console script for verbose_version_info."""
 import sys
 
-import click
+try:
+    import click
+except ImportError:
+    raise ImportError(
+        "The requirements for the cli usage aren't installed.\n"
+        "Install verbose-version-info with the cli extras e.g.:\n"
+        "`pip install verbose-version-info[cli]`"
+    )
 
 
 @click.command()
@@ -18,8 +25,7 @@ def main(args=None) -> int:
     int
         Returncode
     """
-    click.echo("Replace this message by putting your code into " "verbose_version_info.cli.main")
-    click.echo("See click documentation at https://click.palletsprojects.com/")
+    click.echo("Not yet Implemented!")
     return 0
 
 

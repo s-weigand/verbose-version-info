@@ -1,29 +1,40 @@
-# deployment
-pip>=19.2.3
-wheel>=0.33.6
-# runtime requirements
+# Runtime Requirements
 # pinned so the bot can create PRs to test with new versions
-Click==7.1.2
+
+## install_requires
 importlib_metadata==3.4.0
 
-# quality asurence
+## extras_require
+### cli
+Click==7.1.2
+
+
+# Development
+
+## deployment
+pip>=19.2.3
+wheel>=0.33.6
+
+## quality asurence
 black>=19.10b0
 flake8>=3.8.0
 isort>=5.2.2
 pre-commit>=2.6.0
 pydocstyle>=5.0.2
-# docs requirements
+
+## docs requirements
 Sphinx>=3.2.0
 sphinx-rtd-theme>=0.3.1
 sphinx-copybutton>=0.2.5
 myst-parser>=0.12.0
-# test requirements
+
+## test requirements
 coverage>=4.5.1
 pytest>=4.0.0
 pytest-cov>=2.5.1
 tox>=3.5.2
 
-# dummy distributions for testing
+### dummy distributions for testing
 git+https://github.com/s-weigand/git-install-test-distribution.git
 -e tests/dummy_packages/editable_install_setup_cfg
 -e tests/dummy_packages/editable_install_setup_py

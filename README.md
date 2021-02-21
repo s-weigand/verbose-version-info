@@ -27,6 +27,7 @@ Implemented
 - Basic version retrieval
 - Customizable string for not found version
 - Commit_id for `pip install git+<url>`
+- Split off cli to an extra
 
 TODO
 
@@ -36,5 +37,5 @@ TODO
 - commit sha for `pip install .` if `.git` exists (possible?)
 - setting formatter: Mapping[str, format_function] (used for sha)
 - extract minimal required versions (useful for CI tests, of the min version)
-- split off cli to an extra
+- export minimal requirements to file (pip or conda style)
 - add conda support
