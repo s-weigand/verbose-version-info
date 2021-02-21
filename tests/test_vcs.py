@@ -9,8 +9,11 @@ except ImportError:
 
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
+from tests import DUMMY_PKG_ROOT
+from tests import PKG_ROOT
 
 from verbose_version_info.vcs import VcsInfo
+from verbose_version_info.vcs import get_editable_install_basepath
 from verbose_version_info.vcs import get_url_vcs_information
 
 
@@ -83,3 +86,21 @@ def test_get_vcs_information_url_install_broken_dist(monkeypatch: MonkeyPatch):
     result = get_url_vcs_information("git-install-test-distribution")
 
     assert result is None
+
+
+@pytest.mark.parametrize(
+    "distribution_name,expected",
+    (
+        ("verbose-version-info", PKG_ROOT),
+        ("git-install-test-distribution", None),
+        ("editable_install_setup_cfg", DUMMY_PKG_ROOT / "editable_install_setup_cfg"),
+        ("editable_install_setup_py", DUMMY_PKG_ROOT / "editable_install_setup_py"),
+        ("editable_install_src_pattern", DUMMY_PKG_ROOT / "editable_install_src_pattern"),
+        ("editable_install_with_dotgit", DUMMY_PKG_ROOT / "editable_install_with_dotgit"),
+        ("not-a-distribution", None),
+        ("pytest", None),
+    ),
+)
+def test_get_editable_install_basepath(distribution_name: str, expected: str):
+    """Expected default behavior with default settings."""
+    assert get_editable_install_basepath(distribution_name) == expected

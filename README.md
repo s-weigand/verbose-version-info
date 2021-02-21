@@ -28,14 +28,15 @@ Implemented
 - Customizable string for not found version
 - Commit_id for `pip install git+<url>`
 - Split off cli to an extra
+- Detect `pip install -e` installation and get path
 
 TODO
 
 - Reset settings function (mostly notebook showoff)
-- detect `pip install -e` installation
 - commit sha for `pip install -e .` if `.git` exists
 - commit sha for `pip install .` if `.git` exists (possible?)
 - setting formatter: Mapping[str, format_function] (used for sha)
 - extract minimal required versions (useful for CI tests, of the min version)
 - export minimal requirements to file (pip or conda style)
 - add conda support
+- create github markdown summary
