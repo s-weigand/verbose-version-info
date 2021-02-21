@@ -27,6 +27,18 @@ def test_get_vcs_information_git_install():
     assert result == expected
 
 
+def test_get_vcs_information_local():
+    """Retrieve vsc information for url installed package."""
+    result = get_url_vcs_information("local-install")
+    expected = VcsInfo(
+        url=(DUMMY_PKG_ROOT / "local_install").as_uri(),
+        commit_id="",
+        vcs="",
+    )
+
+    assert result == expected
+
+
 @pytest.mark.parametrize("distribution_name", ("not-a-distribution", "pytest"))
 def test_get_vcs_information_none_url_install(distribution_name: str):
     """Invalid distribution Vcs information."""
