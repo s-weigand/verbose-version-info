@@ -1,5 +1,6 @@
 """Main module."""
 
+from functools import lru_cache
 from os import PathLike
 from pathlib import Path
 from typing import Union
@@ -104,6 +105,7 @@ class NotFoundDistribution(Distribution):
         return []
 
 
+@lru_cache()
 def get_distribution(
     distribution_name: str,
 ) -> Distribution:
