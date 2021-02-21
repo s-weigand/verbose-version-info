@@ -28,3 +28,10 @@ src pattern package
 - install: `pip install -e editable_install_with_dotgit`
 - version: `0.0.5`
 - commit: `f2d32d41644de04122e478d6ef9639f5c2292eca`
+
+## local_install
+
+example for a local installation from source
+
+- install: `pip install local_install`
+- version: `0.0.4`

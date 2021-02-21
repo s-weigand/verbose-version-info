@@ -40,3 +40,4 @@ git+https://github.com/s-weigand/git-install-test-distribution.git
 -e tests/dummy_packages/editable_install_setup_py
 -e tests/dummy_packages/editable_install_src_pattern
 -e tests/dummy_packages/editable_install_with_dotgit
+tests/dummy_packages/local_install

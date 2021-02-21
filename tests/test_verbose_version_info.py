@@ -48,6 +48,7 @@ def test_get_distribution_not_found():
         ("editable_install_setup_py", "0.0.4"),
         ("editable_install_src_pattern", "0.0.6"),
         ("editable_install_with_dotgit", "0.0.5"),
+        ("local_install", "0.0.7"),
         ("not-a-distribution", "Unknown"),
     ),
 )
