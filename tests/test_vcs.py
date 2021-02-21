@@ -1,8 +1,10 @@
 """Tests for the ``vcs`` module"""
 
 try:
+    from importlib.metadata import Distribution
     from importlib.metadata import PackagePath
 except ImportError:
+    from importlib.metadata import Distribution  # type: ignore
     from importlib_metadata import PackagePath  # type: ignore
 
 import pytest
@@ -69,3 +71,15 @@ def test_get_vcs_information_url_install(
     result = get_url_vcs_information("git-install-test-distribution")
 
     assert result == expected
+
+
+def test_get_vcs_information_url_install_broken_dist(monkeypatch: MonkeyPatch):
+    """I.e. if RECORD for dist-info or SOURCES.txt for egg-info.
+
+    See: importlib.metadata.Distribution.files
+    """
+    monkeypatch.setattr(Distribution, "files", None)
+
+    result = get_url_vcs_information("git-install-test-distribution")
+
+    assert result is None
