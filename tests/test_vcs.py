@@ -1,17 +1,15 @@
 """Tests for the ``vcs`` module"""
 
 try:
-    from importlib.metadata import Distribution
     from importlib.metadata import PackagePath
 except ImportError:
-    from importlib.metadata import Distribution  # type: ignore
     from importlib_metadata import PackagePath  # type: ignore
 
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
 from tests import DUMMY_PKG_ROOT
-from tests import PKG_ROOT
 
+from verbose_version_info.metadata_compat import Distribution
 from verbose_version_info.vcs import VcsInfo
 from verbose_version_info.vcs import get_editable_install_basepath
 from verbose_version_info.vcs import get_url_vcs_information
@@ -91,7 +89,6 @@ def test_get_vcs_information_url_install_broken_dist(monkeypatch: MonkeyPatch):
 @pytest.mark.parametrize(
     "distribution_name,expected",
     (
-        ("verbose-version-info", PKG_ROOT),
         ("git-install-test-distribution", None),
         ("editable_install_setup_cfg", DUMMY_PKG_ROOT / "editable_install_setup_cfg"),
         ("editable_install_setup_py", DUMMY_PKG_ROOT / "editable_install_setup_py"),
