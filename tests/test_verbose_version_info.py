@@ -44,6 +44,10 @@ def test_get_distribution_not_found():
         ("verbose_version_info", __version__),
         ("git-install-test-distribution", "0.0.2"),
         ("git_install_test_distribution", "0.0.2"),
+        ("editable_install_setup_cfg", "0.0.3"),
+        ("editable_install_setup_py", "0.0.4"),
+        ("editable_install_src_pattern", "0.0.6"),
+        ("editable_install_with_dotgit", "0.0.5"),
         ("not-a-distribution", "Unknown"),
     ),
 )

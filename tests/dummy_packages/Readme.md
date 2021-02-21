@@ -14,6 +14,13 @@
 - install: `pip install -e editable_install_setup_py`
 - version: `0.0.4`
 
+## editable_install_src_pattern
+
+src pattern package
+
+- install: `pip install -e editable_install_src_pattern`
+- version: `0.0.6`
+
 ## editable_install_with_dotgit
 
 `setup.py` only package with a `.git` next to `setup.py`
