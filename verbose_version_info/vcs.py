@@ -1,14 +1,45 @@
 """Module containing code for version control system retrieval."""
 import json
 import os
+import subprocess
 import sys
 from pathlib import Path
+from typing import Callable
+from typing import List
 from typing import NamedTuple
 from typing import Optional
+from typing import Tuple
+from typing import Union
 from urllib.parse import unquote
 from urllib.parse import urlparse
 
 from verbose_version_info.verbose_version_info import get_distribution
+
+VcsCommitIdReader = Callable[[Path], Optional[Tuple[str, str]]]
+
+VCS_COMMIT_ID_READER: List[VcsCommitIdReader] = []
+
+
+def add_vcs_commit_id_reader(func: VcsCommitIdReader) -> VcsCommitIdReader:
+    """Add vcs commit_id reader function to the list of registered function.
+
+    This is pretty much the most simple decorator possible,
+    there isn't any sanity checking (e.g. functools function signature)
+    since this package doesn't have a pluginsystem and the sanity check is done by mypy.
+
+    Parameters
+    ----------
+    func : VcsCommitIdReader
+        Function to be added
+
+    Returns
+    -------
+    VcsCommitIdReader
+        Originally added function.
+    """
+    VCS_COMMIT_ID_READER.append(func)
+
+    return func
 
 
 class VerboseVersionInfo(NamedTuple):
@@ -171,3 +202,70 @@ def get_local_install_basepath(
         return get_path_of_file_uri(vv_info.url)
     else:
         return get_editable_install_basepath(distribution_name)
+
+
+def run_vcs_commit_id_command(
+    *,
+    vcs_name: str,
+    commit_id_command: Union[List[str], Tuple[str, ...]],
+    local_install_basepath: Path,
+    need_to_exist_path_child: str = ".",
+) -> Optional[Tuple[str, str]]:
+    """Inner function of commit_id retrieval functions.
+
+    Parameters
+    ----------
+    vcs_name : str
+        Name if the vcs, which will be used as part of the result.
+    commit_id_command : Union[List[str], Tuple[str, ...]]
+        Shell command to return the commit_id.
+        E.g. for ``git``: ``("git", "rev-parse", "HEAD")``
+    local_install_basepath : Path
+        Basepath of the local installation.
+    need_to_exist_path_child : str
+        Childitem that needs to exists inside of local_install_basepath.
+        E.g. for ``git``: ``".git"``. by default "."
+
+    Returns
+    -------
+    Optional[Tuple[str, str]]
+        (vcs_name, commit_id)
+
+    See Also
+    --------
+    get_local_git_commit_id
+    """
+    if (local_install_basepath / need_to_exist_path_child).exists():
+        vcs_output = subprocess.run(
+            commit_id_command, cwd=local_install_basepath, capture_output=True
+        )
+        commit_id = vcs_output.stdout.decode().rstrip()
+        if vcs_output.returncode == 0 and commit_id != "":
+            return vcs_name, commit_id
+    return None
+
+
+@add_vcs_commit_id_reader
+def get_local_git_commit_id(local_install_basepath: Path) -> Optional[Tuple[str, str]]:
+    """Get git commit_id of locally installed package.
+
+    Parameters
+    ----------
+    local_install_basepath : Path
+        Basepath of the local installation.
+
+    Returns
+    -------
+    Optional[Tuple[str, str]]
+        (vcs_name, commit_id)
+
+    See Also
+    --------
+    run_vcs_commit_id_command
+    """
+    return run_vcs_commit_id_command(
+        vcs_name="git",
+        commit_id_command=("git", "rev-parse", "HEAD"),
+        local_install_basepath=local_install_basepath,
+        need_to_exist_path_child=".git",
+    )
