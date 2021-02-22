@@ -1,3 +1,6 @@
 [submodule "tests/dummy_packages/editable_install_with_dotgit"]
 	path = tests/dummy_packages/editable_install_with_dotgit
 	url = https://github.com/s-weigand/editable-install-with-dotgit.git
+[submodule "tests/dummy_packages/local_install_with_dotgit"]
+	path = tests/dummy_packages/local_install_with_dotgit
+	url = https://github.com/s-weigand/local-install-with-dotgit

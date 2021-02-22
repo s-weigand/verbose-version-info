@@ -8,6 +8,7 @@ package installed directly from git
 
 - install: `pip install git+https://github.com/s-weigand/git-install-test-distribution.git`
 - version: `0.0.2`
+- commit: `a7f7bf28dbe9bfceba1af8a259383e398a942ad0`
 
 ## editable_install_setup_cfg
 
@@ -58,3 +59,11 @@ example for a local installation from source using src pattern
 
 - install: `pip install tests/dummy_packages/local_install_src_pattern`
 - version: `0.0.9`
+
+## local_install_with_dotgit
+
+example for a local installation from source with a `.git` next to `setup.py`
+
+- install: `pip install tests/dummy_packages/local_install_with_dotgit`
+- version: `0.0.10`
+- commit: `df5c1e9302972fa5732a320d4cdef478cf783b8f`

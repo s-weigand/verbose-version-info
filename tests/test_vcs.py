@@ -155,6 +155,7 @@ def test_get_editable_install_basepath(distribution_name: str, expected: str):
         Path(__file__),
         (DUMMY_PKG_ROOT / "local_install"),
         (DUMMY_PKG_ROOT / "local_install with spaces in path"),
+        (DUMMY_PKG_ROOT / "local_install_with_dotgit"),
     ),
 )
 def test_parse_file_uri(path: Path):
@@ -200,6 +201,10 @@ def test_get_path_of_file_uri(uri: str):
         (
             "local_install_src_pattern",
             DUMMY_PKG_ROOT / "local_install_src_pattern",
+        ),
+        (
+            "local_install_with_dotgit",
+            DUMMY_PKG_ROOT / "local_install_with_dotgit",
         ),
     ),
 )

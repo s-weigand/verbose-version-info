@@ -51,6 +51,7 @@ def test_get_distribution_not_found():
         ("local_install", "0.0.7"),
         ("local_install_with_spaces_in_path", "0.0.8"),
         ("local_install_src_pattern", "0.0.9"),
+        ("local_install_with_dotgit", "0.0.10"),
         ("not-a-distribution", "Unknown"),
     ),
 )
