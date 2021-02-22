@@ -22,7 +22,7 @@ from verbose_version_info.vcs import get_url_vcs_information
 
 
 def test_get_vcs_information_git_install():
-    """Retrieve vsc information for url installed package."""
+    """Vsc information for git+url installed package."""
     result = get_url_vcs_information("git-install-test-distribution")
     expected = VerboseVersionInfo(
         version="0.0.2",
@@ -45,7 +45,7 @@ def test_get_vcs_information_git_install():
 def test_get_vcs_information_local_installation(
     distribution_name: str, version: str, folder_name: str
 ):
-    """Retrieve vsc information for url installed package."""
+    """No Vsc information local installed packages w/o vcs."""
     result = get_url_vcs_information(distribution_name)
     expected = VerboseVersionInfo(
         version=version,
@@ -99,7 +99,9 @@ def test_get_vcs_information_none_url_install(distribution_name: str):
 def test_get_vcs_information_url_install(
     monkeypatch: MonkeyPatch, json_str: str, expected: VerboseVersionInfo
 ):
-    """Retrieve vsc information for url installed package."""
+    """Retrieve vsc information for url installed package.
+    Reading the text to parse is mocked, so different results can be checked.
+    """
     monkeypatch.setattr(PackagePath, "read_text", lambda x: json_str)
     monkeypatch.setattr(
         verbose_version_info.verbose_version_info,
@@ -113,7 +115,8 @@ def test_get_vcs_information_url_install(
 
 
 def test_get_vcs_information_url_install_broken_dist(monkeypatch: MonkeyPatch):
-    """I.e. if RECORD for dist-info or SOURCES.txt for egg-info.
+    """Distribution files property is None
+    I.e. if RECORD for dist-info or SOURCES.txt for egg-info.
 
     See: importlib.metadata.Distribution.files
     """
@@ -142,7 +145,7 @@ def test_get_vcs_information_url_install_broken_dist(monkeypatch: MonkeyPatch):
     ),
 )
 def test_get_editable_install_basepath(distribution_name: str, expected: str):
-    """Expected default behavior with default settings."""
+    """Find basepath for all editable installed packages."""
     assert get_editable_install_basepath(distribution_name) == expected
 
 
@@ -155,7 +158,7 @@ def test_get_editable_install_basepath(distribution_name: str, expected: str):
     ),
 )
 def test_parse_file_uri(path: Path):
-    """Back and forth parsing of existing Paths works and gives the proper path."""
+    """Back and forth parsing of existing Paths  returns the original path."""
     uri = path.as_uri()
     result = get_path_of_file_uri(uri)
 
@@ -172,7 +175,7 @@ def test_parse_file_uri(path: Path):
     ),
 )
 def test_get_path_of_file_uri(uri: str):
-    """Back and forth parsing of existing Paths works and gives the proper path."""
+    """Nonsense and invalid path uri's give None."""
     result = get_path_of_file_uri(uri)
 
     assert result is None
@@ -201,12 +204,12 @@ def test_get_path_of_file_uri(uri: str):
     ),
 )
 def test_get_local_install_basepath(distribution_name: str, expected: str):
-    """Proper Path for all locally installed packages"""
+    """Validate Path for all locally installed packages."""
     assert get_local_install_basepath(distribution_name) == expected
 
 
 def test_get_local_install_basepath_with_vv_info_not_none():
-    """vv_info is used directly if passes"""
+    """'get_url_vcs_information' isn't executed if 'vv_info' passed."""
     expected_path = PKG_ROOT / "tests"
     result = get_local_install_basepath(
         "verbose-version-info",

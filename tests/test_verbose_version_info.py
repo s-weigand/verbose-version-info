@@ -13,7 +13,7 @@ from verbose_version_info.verbose_version_info import get_distribution
 
 
 def test_get_distribution():
-    """Valid distribution."""
+    """Valid distributions."""
     result = get_distribution("verbose-version-info")
     expected = distribution("verbose-version-info")
 
@@ -23,7 +23,7 @@ def test_get_distribution():
 
 
 def test_get_distribution_not_found():
-    """Invalid distribution."""
+    """Invalid distributions."""
     result = get_distribution("not-a-distribution")
 
     assert isinstance(result, NotFoundDistribution)
@@ -55,7 +55,8 @@ def test_get_distribution_not_found():
     ),
 )
 def test_basic_version(distribution_name: str, expected: str):
-    """Expected default behavior with default settings."""
+    """Versions for dummy packages and root.
+    Missing package has default version string."""
     assert basic_version(distribution_name) == expected
 
 

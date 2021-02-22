@@ -9,7 +9,7 @@ from verbose_version_info import cli
 
 
 def test_missing_cli_extra_requires(monkeypatch: MonkeyPatch):
-    """Proper exception if cli extra_requires is mussing"""
+    """Exception raised if cli extra_requires is missing"""
     monkeypatch.delitem(sys.modules, "verbose_version_info.cli")
     monkeypatch.setitem(sys.modules, "click", None)
 

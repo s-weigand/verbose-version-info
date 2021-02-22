@@ -133,7 +133,8 @@ def get_path_of_file_uri(uri: str) -> Optional[Path]:
     if uri.startswith("file://"):
         parsed_uri = urlparse(uri)
         escape_uri_path = unquote(parsed_uri.path)
-        if sys.platform.startswith("win") and escape_uri_path.startswith("/"):
+        # rare edgecase
+        if sys.platform.startswith("win") and escape_uri_path.startswith("/"):  # pragma: no branch
             escape_uri_path = escape_uri_path[1:]
         path = Path(escape_uri_path)
         if path.exists():
