@@ -11,16 +11,17 @@ from urllib.parse import urlparse
 from verbose_version_info.verbose_version_info import get_distribution
 
 
-class VcsInfo(NamedTuple):
-    """Information container for url or vcs installed packages."""
+class VerboseVersionInfo(NamedTuple):
+    """Information container for verbose version information."""
 
+    version: str
     url: str
     commit_id: str
     vcs: str
 
 
-def get_url_vcs_information(distribution_name: str) -> Optional[VcsInfo]:
-    """Extract package information for packages installed from an url.
+def get_url_vcs_information(distribution_name: str) -> Optional[VerboseVersionInfo]:
+    """Extract package information for packages installed from an url or locally.
 
     If the packages was installed using an url 'direct_url.json'
     will be parsed and the information extracted.
@@ -55,30 +56,33 @@ def get_url_vcs_information(distribution_name: str) -> Optional[VcsInfo]:
     )
 
 
-    If the package was not installed from an url:
-    ``pip install package-name``
+    If the package was not installed from an url or locally:
+    ``pip install package-on-pypi``
 
     >>> get_url_vcs_information("package-name")
     None
 
     Returns
     -------
-    VcsInfo | None
-        VcsInfo
+    VerboseVersionInfo | None
+        VerboseVersionInfo
             If the package was installed from a url resource.
         None
             If the package was installed from a local resource or PyPi.
     """
-    dist_files = get_distribution(distribution_name).files
+    dist = get_distribution(distribution_name)
+    dist_files = dist.files
     if dist_files is not None:
         for path in dist_files:
             if path.name == "direct_url.json":
                 vcs_dict = json.loads(path.read_text())
-                url = vcs_dict.get("url", "")
                 vcs_info = vcs_dict.get("vcs_info", {})
-                commit_id = vcs_info.get("commit_id", "")
-                vcs = vcs_info.get("vcs", "")
-                return VcsInfo(url, commit_id, vcs)
+                return VerboseVersionInfo(
+                    version=dist.version,
+                    url=vcs_dict.get("url", ""),
+                    commit_id=vcs_info.get("commit_id", ""),
+                    vcs=vcs_info.get("vcs", ""),
+                )
 
     return None
 
@@ -137,7 +141,9 @@ def get_path_of_file_uri(uri: str) -> Optional[Path]:
     return None
 
 
-def get_local_install_basepath(distribution_name: str) -> Optional[Path]:
+def get_local_install_basepath(
+    distribution_name: str,
+) -> Optional[Path]:
     """Extract base installation path for packages installed from local resource.
 
     Parameters
@@ -156,8 +162,8 @@ def get_local_install_basepath(distribution_name: str) -> Optional[Path]:
     get_path_of_file_uri
     get_editable_install_basepath
     """
-    vcs_info = get_url_vcs_information(distribution_name)
-    if vcs_info is not None and vcs_info.url:
-        return get_path_of_file_uri(vcs_info.url)
+    vv_info = get_url_vcs_information(distribution_name)
+    if vv_info is not None and vv_info.url:
+        return get_path_of_file_uri(vv_info.url)
     else:
         return get_editable_install_basepath(distribution_name)

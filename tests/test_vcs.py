@@ -12,8 +12,9 @@ from _pytest.monkeypatch import MonkeyPatch
 from tests import DUMMY_PKG_ROOT
 from tests import PKG_ROOT
 
+import verbose_version_info.verbose_version_info
 from verbose_version_info.metadata_compat import Distribution
-from verbose_version_info.vcs import VcsInfo
+from verbose_version_info.vcs import VerboseVersionInfo
 from verbose_version_info.vcs import get_editable_install_basepath
 from verbose_version_info.vcs import get_local_install_basepath
 from verbose_version_info.vcs import get_path_of_file_uri
@@ -23,7 +24,8 @@ from verbose_version_info.vcs import get_url_vcs_information
 def test_get_vcs_information_git_install():
     """Retrieve vsc information for url installed package."""
     result = get_url_vcs_information("git-install-test-distribution")
-    expected = VcsInfo(
+    expected = VerboseVersionInfo(
+        version="0.0.2",
         url="https://github.com/s-weigand/git-install-test-distribution.git",
         commit_id="a7f7bf28dbe9bfceba1af8a259383e398a942ad0",
         vcs="git",
@@ -33,16 +35,20 @@ def test_get_vcs_information_git_install():
 
 
 @pytest.mark.parametrize(
-    "distribution_name,folder_name",
+    "distribution_name, version, folder_name",
     (
-        ("local-install", "local_install"),
-        ("local_install_with_spaces_in_path", "local_install with spaces in path"),
+        ("local-install", "0.0.7", "local_install"),
+        ("local_install_with_spaces_in_path", "0.0.8", "local_install with spaces in path"),
+        ("local_install_src_pattern", "0.0.9", "local_install_src_pattern"),
     ),
 )
-def test_get_vcs_information_local_installation(distribution_name: str, folder_name: str):
+def test_get_vcs_information_local_installation(
+    distribution_name: str, version: str, folder_name: str
+):
     """Retrieve vsc information for url installed package."""
     result = get_url_vcs_information(distribution_name)
-    expected = VcsInfo(
+    expected = VerboseVersionInfo(
+        version=version,
         url=(DUMMY_PKG_ROOT / folder_name).as_uri(),
         commit_id="",
         vcs="",
@@ -63,7 +69,8 @@ def test_get_vcs_information_none_url_install(distribution_name: str):
     (
         (
             '{"url": "https://foo.bar"}',
-            VcsInfo(
+            VerboseVersionInfo(
+                version="0.0.2",
                 url="https://foo.bar",
                 commit_id="",
                 vcs="",
@@ -71,7 +78,8 @@ def test_get_vcs_information_none_url_install(distribution_name: str):
         ),
         (
             '{"url": "https://foo.bar", "vcs_info":{"unknown_key":"foo"}}',
-            VcsInfo(
+            VerboseVersionInfo(
+                version="0.0.2",
                 url="https://foo.bar",
                 commit_id="",
                 vcs="",
@@ -79,7 +87,8 @@ def test_get_vcs_information_none_url_install(distribution_name: str):
         ),
         (
             '{"url": "https://foo.bar", "vcs_info":{"commit_id":"foo"}}',
-            VcsInfo(
+            VerboseVersionInfo(
+                version="0.0.2",
                 url="https://foo.bar",
                 commit_id="foo",
                 vcs="",
@@ -88,10 +97,15 @@ def test_get_vcs_information_none_url_install(distribution_name: str):
     ),
 )
 def test_get_vcs_information_url_install(
-    monkeypatch: MonkeyPatch, json_str: str, expected: VcsInfo
+    monkeypatch: MonkeyPatch, json_str: str, expected: VerboseVersionInfo
 ):
     """Retrieve vsc information for url installed package."""
     monkeypatch.setattr(PackagePath, "read_text", lambda x: json_str)
+    monkeypatch.setattr(
+        verbose_version_info.verbose_version_info,
+        "get_distribution",
+        verbose_version_info.verbose_version_info.get_distribution.__wrapped__,
+    )
 
     result = get_url_vcs_information("git-install-test-distribution")
 
@@ -104,6 +118,11 @@ def test_get_vcs_information_url_install_broken_dist(monkeypatch: MonkeyPatch):
     See: importlib.metadata.Distribution.files
     """
     monkeypatch.setattr(Distribution, "files", None)
+    monkeypatch.setattr(
+        verbose_version_info.verbose_version_info,
+        "get_distribution",
+        verbose_version_info.verbose_version_info.get_distribution.__wrapped__,
+    )
 
     result = get_url_vcs_information("git-install-test-distribution")
 
@@ -182,5 +201,6 @@ def test_get_path_of_file_uri(uri: str):
     ),
 )
 def test_get_local_install_basepath(distribution_name: str, expected: str):
+    """Proper Path for all locally installed packages"""
     """Expected default behavior with default settings."""
     assert get_local_install_basepath(distribution_name) == expected
