@@ -2,6 +2,13 @@
 
 The installation description assumes that your current path is the repo root.
 
+## git_install_test_distribution
+
+package installed directly from git
+
+- install: `pip install git+https://github.com/s-weigand/git-install-test-distribution.git`
+- version: `0.0.2`
+
 ## editable_install_setup_cfg
 
 `setup.cfg` only package
