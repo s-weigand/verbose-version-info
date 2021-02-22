@@ -19,7 +19,7 @@ wheel>=0.33.6
 black>=19.10b0
 flake8>=3.8.0
 isort>=5.2.2
-pre-commit>=2.6.0
+pre-commit>=2.10.0
 pydocstyle>=5.0.2
 
 ## docs requirements
