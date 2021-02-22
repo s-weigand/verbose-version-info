@@ -44,3 +44,10 @@ example for a local installation from source
 
 - install: `pip install 'tests/dummy_packages/local_install with spaces in path'`
 - version: `0.0.8`
+
+## local_install_src_pattern
+
+example for a local installation from source using src pattern
+
+- install: `pip install tests/dummy_packages/local_install_src_pattern`
+- version: `0.0.9`

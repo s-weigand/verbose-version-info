@@ -175,6 +175,10 @@ def test_get_path_of_file_uri(uri: str):
             "local_install_with_spaces_in_path",
             DUMMY_PKG_ROOT / "local_install with spaces in path",
         ),
+        (
+            "local_install_src_pattern",
+            DUMMY_PKG_ROOT / "local_install_src_pattern",
+        ),
     ),
 )
 def test_get_local_install_basepath(distribution_name: str, expected: str):
