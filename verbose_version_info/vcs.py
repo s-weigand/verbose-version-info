@@ -84,7 +84,7 @@ def get_url_vcs_information(distribution_name: str) -> Optional[VcsInfo]:
 
 
 def get_editable_install_basepath(distribution_name: str) -> Optional[Path]:
-    """Get the basepath of and as editable installed package.
+    """Extract the basepath of an as editable installed package.
 
     This assumes that a file with ``<distribution_name>.egg-link`` exists
     somewhere in the path (which is at least for pip the case).
@@ -111,7 +111,7 @@ def get_editable_install_basepath(distribution_name: str) -> Optional[Path]:
 
 
 def get_path_of_file_uri(uri: str) -> Optional[Path]:
-    """Path of a file uri if the path exists.
+    """Convert path of a file uri if the path exists.
 
     Used to get the base path of local installations from source,
     e.g. ``pip install .`` .
@@ -135,3 +135,29 @@ def get_path_of_file_uri(uri: str) -> Optional[Path]:
         if path.exists():
             return path
     return None
+
+
+def get_local_install_basepath(distribution_name: str) -> Optional[Path]:
+    """Extract base installation path for packages installed from local resource.
+
+    Parameters
+    ----------
+    distribution_name : str
+        The name of the distribution package as a string.
+
+    Returns
+    -------
+    Optional[Path]
+        Path to the root of a package which was installed from a local resource.
+
+    See Also
+    --------
+    get_url_vcs_information
+    get_path_of_file_uri
+    get_editable_install_basepath
+    """
+    vcs_info = get_url_vcs_information(distribution_name)
+    if vcs_info is not None and vcs_info.url:
+        return get_path_of_file_uri(vcs_info.url)
+    else:
+        return get_editable_install_basepath(distribution_name)

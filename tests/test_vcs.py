@@ -10,10 +10,12 @@ from pathlib import Path
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
 from tests import DUMMY_PKG_ROOT
+from tests import PKG_ROOT
 
 from verbose_version_info.metadata_compat import Distribution
 from verbose_version_info.vcs import VcsInfo
 from verbose_version_info.vcs import get_editable_install_basepath
+from verbose_version_info.vcs import get_local_install_basepath
 from verbose_version_info.vcs import get_path_of_file_uri
 from verbose_version_info.vcs import get_url_vcs_information
 
@@ -155,3 +157,26 @@ def test_get_path_of_file_uri(uri: str):
     result = get_path_of_file_uri(uri)
 
     assert result is None
+
+
+@pytest.mark.parametrize(
+    "distribution_name,expected",
+    (
+        ("verbose-version-info", PKG_ROOT),
+        ("git-install-test-distribution", None),
+        ("editable_install_setup_cfg", DUMMY_PKG_ROOT / "editable_install_setup_cfg"),
+        ("editable_install_setup_py", DUMMY_PKG_ROOT / "editable_install_setup_py"),
+        ("editable_install_src_pattern", DUMMY_PKG_ROOT / "editable_install_src_pattern"),
+        ("editable_install_with_dotgit", DUMMY_PKG_ROOT / "editable_install_with_dotgit"),
+        ("not-a-distribution", None),
+        ("pytest", None),
+        ("local-install", DUMMY_PKG_ROOT / "local_install"),
+        (
+            "local_install_with_spaces_in_path",
+            DUMMY_PKG_ROOT / "local_install with spaces in path",
+        ),
+    ),
+)
+def test_get_local_install_basepath(distribution_name: str, expected: str):
+    """Expected default behavior with default settings."""
+    assert get_local_install_basepath(distribution_name) == expected
