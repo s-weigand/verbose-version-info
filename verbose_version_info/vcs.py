@@ -5,6 +5,8 @@ import sys
 from pathlib import Path
 from typing import NamedTuple
 from typing import Optional
+from urllib.parse import unquote
+from urllib.parse import urlparse
 
 from verbose_version_info.verbose_version_info import get_distribution
 
@@ -105,4 +107,31 @@ def get_editable_install_basepath(distribution_name: str) -> Optional[Path]:
             with open(egg_link) as f:
                 base_path = os.path.join(*f.read().splitlines(keepends=False))
                 return Path(base_path).resolve()
+    return None
+
+
+def get_path_of_file_uri(uri: str) -> Optional[Path]:
+    """Path of a file uri if the path exists.
+
+    Used to get the base path of local installations from source,
+    e.g. ``pip install .`` .
+
+    Parameters
+    ----------
+    uri : str
+        Uri to a file e.g. 'file:///tmp/dist'
+
+    Returns
+    -------
+    Path
+        Path of the file if it exists
+    """
+    if uri.startswith("file://"):
+        parsed_uri = urlparse(uri)
+        escape_uri_path = unquote(parsed_uri.path)
+        if sys.platform.startswith("win") and escape_uri_path.startswith("/"):
+            escape_uri_path = escape_uri_path[1:]
+        path = Path(escape_uri_path)
+        if path.exists():
+            return path
     return None

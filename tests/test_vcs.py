@@ -5,6 +5,8 @@ try:
 except ImportError:
     from importlib_metadata import PackagePath  # type: ignore
 
+from pathlib import Path
+
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
 from tests import DUMMY_PKG_ROOT
@@ -12,6 +14,7 @@ from tests import DUMMY_PKG_ROOT
 from verbose_version_info.metadata_compat import Distribution
 from verbose_version_info.vcs import VcsInfo
 from verbose_version_info.vcs import get_editable_install_basepath
+from verbose_version_info.vcs import get_path_of_file_uri
 from verbose_version_info.vcs import get_url_vcs_information
 
 
@@ -27,11 +30,18 @@ def test_get_vcs_information_git_install():
     assert result == expected
 
 
-def test_get_vcs_information_local():
+@pytest.mark.parametrize(
+    "distribution_name,folder_name",
+    (
+        ("local-install", "local_install"),
+        ("local_install_with_spaces_in_path", "local_install with spaces in path"),
+    ),
+)
+def test_get_vcs_information_local_installation(distribution_name: str, folder_name: str):
     """Retrieve vsc information for url installed package."""
-    result = get_url_vcs_information("local-install")
+    result = get_url_vcs_information(distribution_name)
     expected = VcsInfo(
-        url=(DUMMY_PKG_ROOT / "local_install").as_uri(),
+        url=(DUMMY_PKG_ROOT / folder_name).as_uri(),
         commit_id="",
         vcs="",
     )
@@ -113,3 +123,35 @@ def test_get_vcs_information_url_install_broken_dist(monkeypatch: MonkeyPatch):
 def test_get_editable_install_basepath(distribution_name: str, expected: str):
     """Expected default behavior with default settings."""
     assert get_editable_install_basepath(distribution_name) == expected
+
+
+@pytest.mark.parametrize(
+    "path",
+    (
+        Path(__file__),
+        (DUMMY_PKG_ROOT / "local_install"),
+        (DUMMY_PKG_ROOT / "local_install with spaces in path"),
+    ),
+)
+def test_parse_file_uri(path: Path):
+    """Back and forth parsing of existing Paths works and gives the proper path."""
+    uri = path.as_uri()
+    result = get_path_of_file_uri(uri)
+
+    assert result == path
+    assert result.exists()
+
+
+@pytest.mark.parametrize(
+    "uri",
+    (
+        "random_string",
+        "file:///random_string",
+        (Path(__file__) / "does_not_exist").as_uri(),
+    ),
+)
+def test_get_path_of_file_uri(uri: str):
+    """Back and forth parsing of existing Paths works and gives the proper path."""
+    result = get_path_of_file_uri(uri)
+
+    assert result is None
