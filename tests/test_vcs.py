@@ -202,5 +202,14 @@ def test_get_path_of_file_uri(uri: str):
 )
 def test_get_local_install_basepath(distribution_name: str, expected: str):
     """Proper Path for all locally installed packages"""
-    """Expected default behavior with default settings."""
     assert get_local_install_basepath(distribution_name) == expected
+
+
+def test_get_local_install_basepath_with_vv_info_not_none():
+    """vv_info is used directly if passes"""
+    expected_path = PKG_ROOT / "tests"
+    result = get_local_install_basepath(
+        "verbose-version-info",
+        vv_info=VerboseVersionInfo(version="", url=expected_path.as_uri(), commit_id="", vcs=""),
+    )
+    assert result == expected_path
