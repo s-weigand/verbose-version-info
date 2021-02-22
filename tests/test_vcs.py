@@ -40,6 +40,7 @@ def test_get_vcs_information_git_install():
         ("local-install", "0.0.7", "local_install"),
         ("local_install_with_spaces_in_path", "0.0.8", "local_install with spaces in path"),
         ("local_install_src_pattern", "0.0.9", "local_install_src_pattern"),
+        ("local_install_with_dotgit", "0.0.10", "local_install_with_dotgit"),
     ),
 )
 def test_get_vcs_information_local_installation(
