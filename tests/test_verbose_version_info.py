@@ -1,40 +1,10 @@
 """Tests for ``verbose_version_info`` package."""
 
-from pathlib import Path
-
 import pytest
 
 from verbose_version_info import SETTINGS
 from verbose_version_info import __version__
-from verbose_version_info.metadata_compat import distribution
-from verbose_version_info.verbose_version_info import NotFoundDistribution
-from verbose_version_info.verbose_version_info import get_distribution
 from verbose_version_info.verbose_version_info import release_version
-
-
-def test_get_distribution():
-    """Valid distributions."""
-    result = get_distribution("verbose-version-info")
-    expected = distribution("verbose-version-info")
-
-    assert result.version == expected.version
-    assert result.files == expected.files
-    assert result.requires == expected.requires
-
-
-def test_get_distribution_not_found():
-    """Invalid distributions."""
-    result = get_distribution("not-a-distribution")
-
-    assert isinstance(result, NotFoundDistribution)
-    assert result.version == "Unknown"
-    assert result.files == []
-    assert result.requires == []
-
-    # Just for coverage of NotFoundDistribution
-    assert result.read_text("foo") is None
-    assert result.locate_file("foo") == Path("foo")
-    assert result.locate_file(Path("foo")) == Path("foo")
 
 
 @pytest.mark.parametrize(
@@ -55,7 +25,7 @@ def test_get_distribution_not_found():
         ("not-a-distribution", "Unknown"),
     ),
 )
-def test_basic_version(distribution_name: str, expected: str):
+def test_release_version(distribution_name: str, expected: str):
     """Versions for dummy packages and root.
     Missing package has default version string."""
     assert release_version(distribution_name) == expected
