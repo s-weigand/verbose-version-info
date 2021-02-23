@@ -226,7 +226,9 @@ def test_get_local_install_basepath_with_vv_info_not_none():
     expected_path = PKG_ROOT / "tests"
     result = get_local_install_basepath(
         "verbose-version-info",
-        vv_info=VerboseVersionInfo(version="", url=expected_path.as_uri(), commit_id="", vcs=""),
+        vv_info=VerboseVersionInfo(
+            release_version="", url=expected_path.as_uri(), commit_id="", vcs=""
+        ),
     )
     assert result == expected_path
 
