@@ -193,7 +193,6 @@ def test_get_path_of_file_uri(uri: str):
 @pytest.mark.parametrize(
     "distribution_name,expected",
     (
-        ("verbose-version-info", PKG_ROOT),
         ("git-install-test-distribution", None),
         ("editable_install_setup_cfg", DUMMY_PKG_ROOT / "editable_install_setup_cfg"),
         ("editable_install_setup_py", DUMMY_PKG_ROOT / "editable_install_setup_py"),
