@@ -127,10 +127,10 @@ def get_distribution(
         return NotFoundDistribution()
 
 
-def basic_version(
+def release_version(
     distribution_name: str,
 ) -> str:
-    """Retrieve the basic version of a distribution.
+    """Retrieve the release version of a distribution.
 
     Parameters
     ----------

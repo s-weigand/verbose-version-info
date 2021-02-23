@@ -45,7 +45,7 @@ def add_vcs_commit_id_reader(func: VcsCommitIdReader) -> VcsCommitIdReader:
 class VerboseVersionInfo(NamedTuple):
     """Information container for verbose version information."""
 
-    version: str
+    release_version: str
     url: str
     commit_id: str
     vcs: str
@@ -109,7 +109,7 @@ def get_url_vcs_information(distribution_name: str) -> Optional[VerboseVersionIn
                 vcs_dict = json.loads(path.read_text())
                 vcs_info = vcs_dict.get("vcs_info", {})
                 return VerboseVersionInfo(
-                    version=dist.version,
+                    release_version=dist.version,
                     url=vcs_dict.get("url", ""),
                     commit_id=vcs_info.get("commit_id", ""),
                     vcs=vcs_info.get("vcs", ""),
@@ -237,7 +237,7 @@ def run_vcs_commit_id_command(
     """
     if (local_install_basepath / need_to_exist_path_child).exists():
         vcs_output = subprocess.run(
-            commit_id_command, cwd=local_install_basepath, capture_output=True
+            commit_id_command, cwd=local_install_basepath, stdout=subprocess.PIPE
         )
         commit_id = vcs_output.stdout.decode().rstrip()
         if vcs_output.returncode == 0 and commit_id != "":

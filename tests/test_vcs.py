@@ -32,7 +32,7 @@ def test_get_vcs_information_git_install():
     """Vsc information for git+url installed package."""
     result = get_url_vcs_information("git-install-test-distribution")
     expected = VerboseVersionInfo(
-        version="0.0.2",
+        release_version="0.0.2",
         url="https://github.com/s-weigand/git-install-test-distribution.git",
         commit_id="a7f7bf28dbe9bfceba1af8a259383e398a942ad0",
         vcs="git",
@@ -56,7 +56,7 @@ def test_get_vcs_information_local_installation(
     """No Vsc information local installed packages w/o vcs."""
     result = get_url_vcs_information(distribution_name)
     expected = VerboseVersionInfo(
-        version=version,
+        release_version=version,
         url=(DUMMY_PKG_ROOT / folder_name).as_uri(),
         commit_id="",
         vcs="",
@@ -78,7 +78,7 @@ def test_get_vcs_information_none_url_install(distribution_name: str):
         (
             '{"url": "https://foo.bar"}',
             VerboseVersionInfo(
-                version="0.0.2",
+                release_version="0.0.2",
                 url="https://foo.bar",
                 commit_id="",
                 vcs="",
@@ -87,7 +87,7 @@ def test_get_vcs_information_none_url_install(distribution_name: str):
         (
             '{"url": "https://foo.bar", "vcs_info":{"unknown_key":"foo"}}',
             VerboseVersionInfo(
-                version="0.0.2",
+                release_version="0.0.2",
                 url="https://foo.bar",
                 commit_id="",
                 vcs="",
@@ -96,7 +96,7 @@ def test_get_vcs_information_none_url_install(distribution_name: str):
         (
             '{"url": "https://foo.bar", "vcs_info":{"commit_id":"foo"}}',
             VerboseVersionInfo(
-                version="0.0.2",
+                release_version="0.0.2",
                 url="https://foo.bar",
                 commit_id="foo",
                 vcs="",

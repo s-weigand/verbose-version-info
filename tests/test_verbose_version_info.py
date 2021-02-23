@@ -8,8 +8,8 @@ from verbose_version_info import SETTINGS
 from verbose_version_info import __version__
 from verbose_version_info.metadata_compat import distribution
 from verbose_version_info.verbose_version_info import NotFoundDistribution
-from verbose_version_info.verbose_version_info import basic_version
 from verbose_version_info.verbose_version_info import get_distribution
+from verbose_version_info.verbose_version_info import release_version
 
 
 def test_get_distribution():
@@ -58,11 +58,11 @@ def test_get_distribution_not_found():
 def test_basic_version(distribution_name: str, expected: str):
     """Versions for dummy packages and root.
     Missing package has default version string."""
-    assert basic_version(distribution_name) == expected
+    assert release_version(distribution_name) == expected
 
 
 def test_changing_not_found_version_str(monkeypatch):
     """Changed setting 'not_found_version_str' changes version string."""
     monkeypatch.setitem(SETTINGS, "not_found_version_str", "Not Installed")
 
-    assert basic_version("not-a-distribution") == "Not Installed"
+    assert release_version("not-a-distribution") == "Not Installed"
