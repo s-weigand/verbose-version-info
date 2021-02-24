@@ -11,7 +11,7 @@ from verbose_version_info.data_containers import VcsInfo
 
 VcsCommitIdReader = Callable[[Path], Optional[VcsInfo]]
 
-VCS_COMMIT_ID_READER: List[VcsCommitIdReader] = []
+VCS_COMMIT_ID_READERS: List[VcsCommitIdReader] = []
 
 
 def add_vcs_commit_id_reader(func: VcsCommitIdReader) -> VcsCommitIdReader:
@@ -31,7 +31,7 @@ def add_vcs_commit_id_reader(func: VcsCommitIdReader) -> VcsCommitIdReader:
     VcsCommitIdReader
         Originally added function.
     """
-    VCS_COMMIT_ID_READER.append(func)
+    VCS_COMMIT_ID_READERS.append(func)
 
     return func
 

@@ -60,7 +60,7 @@ def test_get_local_git_commit_id(local_install_basepath: Path, expected: Union[V
 
 def test_add_vcs_commit_id_reader(monkeypatch: MonkeyPatch):
     """Decorated function get added as supposed."""
-    monkeypatch.setattr(verbose_version_info.vcs, "VCS_COMMIT_ID_READER", [])
+    monkeypatch.setattr(verbose_version_info.vcs, "VCS_COMMIT_ID_READERS", [])
 
     @add_vcs_commit_id_reader
     def dummy(local_install_basepath: Path) -> Optional[VcsInfo]:
@@ -68,5 +68,5 @@ def test_add_vcs_commit_id_reader(monkeypatch: MonkeyPatch):
             return VcsInfo(vcs_name="foo", commit_id="bar")
         return None
 
-    assert len(verbose_version_info.vcs.VCS_COMMIT_ID_READER) == 1
-    assert dummy in verbose_version_info.vcs.VCS_COMMIT_ID_READER
+    assert len(verbose_version_info.vcs.VCS_COMMIT_ID_READERS) == 1
+    assert dummy in verbose_version_info.vcs.VCS_COMMIT_ID_READERS
