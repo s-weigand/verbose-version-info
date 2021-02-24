@@ -73,7 +73,7 @@ def find_url_info(distribution_name: str) -> Optional[VerboseVersionInfo]:
                     release_version=dist.version,
                     url=vcs_dict.get("url", ""),
                     commit_id=vcs_info.get("commit_id", ""),
-                    vcs=vcs_info.get("vcs", ""),
+                    vcs_name=vcs_info.get("vcs", ""),
                 )
 
     return None

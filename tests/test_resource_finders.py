@@ -26,7 +26,7 @@ def test_find_url_info_git_install():
         release_version="0.0.2",
         url="https://github.com/s-weigand/git-install-test-distribution.git",
         commit_id="a7f7bf28dbe9bfceba1af8a259383e398a942ad0",
-        vcs="git",
+        vcs_name="git",
     )
 
     assert result == expected
@@ -48,7 +48,7 @@ def test_find_url_info_local_installation(distribution_name: str, version: str, 
         release_version=version,
         url=(DUMMY_PKG_ROOT / folder_name).as_uri(),
         commit_id="",
-        vcs="",
+        vcs_name="",
     )
 
     assert result == expected
@@ -70,7 +70,7 @@ def test_find_url_info_none_url_install(distribution_name: str):
                 release_version="0.0.2",
                 url="https://foo.bar",
                 commit_id="",
-                vcs="",
+                vcs_name="",
             ),
         ),
         (
@@ -79,7 +79,7 @@ def test_find_url_info_none_url_install(distribution_name: str):
                 release_version="0.0.2",
                 url="https://foo.bar",
                 commit_id="",
-                vcs="",
+                vcs_name="",
             ),
         ),
         (
@@ -88,7 +88,7 @@ def test_find_url_info_none_url_install(distribution_name: str):
                 release_version="0.0.2",
                 url="https://foo.bar",
                 commit_id="foo",
-                vcs="",
+                vcs_name="",
             ),
         ),
     ),
@@ -215,7 +215,7 @@ def test_local_install_basepath_with_vv_info_not_none():
     result = local_install_basepath(
         "verbose-version-info",
         vv_info=VerboseVersionInfo(
-            release_version="", url=expected_path.as_uri(), commit_id="", vcs=""
+            release_version="", url=expected_path.as_uri(), commit_id="", vcs_name=""
         ),
     )
     assert result == expected_path

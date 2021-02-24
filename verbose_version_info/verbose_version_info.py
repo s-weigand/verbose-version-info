@@ -10,7 +10,7 @@ class VerboseVersionInfo(NamedTuple):
     release_version: str
     url: str
     commit_id: str
-    vcs: str
+    vcs_name: str
 
 
 def release_version(

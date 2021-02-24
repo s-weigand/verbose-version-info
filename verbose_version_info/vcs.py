@@ -3,11 +3,20 @@ import subprocess
 from pathlib import Path
 from typing import Callable
 from typing import List
+from typing import NamedTuple
 from typing import Optional
 from typing import Tuple
 from typing import Union
 
-VcsCommitIdReader = Callable[[Path], Optional[Tuple[str, str]]]
+
+class VcsInfo(NamedTuple):
+    """Container for vcs information."""
+
+    vcs_name: str
+    commit_id: str
+
+
+VcsCommitIdReader = Callable[[Path], Optional[VcsInfo]]
 
 VCS_COMMIT_ID_READER: List[VcsCommitIdReader] = []
 
@@ -40,7 +49,7 @@ def run_vcs_commit_id_command(
     commit_id_command: Union[List[str], Tuple[str, ...]],
     local_install_basepath: Path,
     need_to_exist_path_child: str = ".",
-) -> Optional[Tuple[str, str]]:
+) -> Optional[VcsInfo]:
     """Inner function of commit_id retrieval functions.
 
     Parameters
@@ -71,12 +80,12 @@ def run_vcs_commit_id_command(
         )
         commit_id = vcs_output.stdout.decode().rstrip()
         if vcs_output.returncode == 0 and commit_id != "":
-            return vcs_name, commit_id
+            return VcsInfo(vcs_name=vcs_name, commit_id=commit_id)
     return None
 
 
 @add_vcs_commit_id_reader
-def get_local_git_commit_id(local_install_basepath: Path) -> Optional[Tuple[str, str]]:
+def get_local_git_commit_id(local_install_basepath: Path) -> Optional[VcsInfo]:
     """Get git commit_id of locally installed package.
 
     Parameters

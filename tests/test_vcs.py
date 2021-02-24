@@ -10,6 +10,7 @@ from _pytest.monkeypatch import MonkeyPatch
 from tests import DUMMY_PKG_ROOT
 
 import verbose_version_info.vcs
+from verbose_version_info.vcs import VcsInfo
 from verbose_version_info.vcs import add_vcs_commit_id_reader
 from verbose_version_info.vcs import get_local_git_commit_id
 from verbose_version_info.vcs import run_vcs_commit_id_command
@@ -65,9 +66,9 @@ def test_add_vcs_commit_id_reader(monkeypatch: MonkeyPatch):
     monkeypatch.setattr(verbose_version_info.vcs, "VCS_COMMIT_ID_READER", [])
 
     @add_vcs_commit_id_reader
-    def dummy(local_install_basepath: Path) -> Optional[Tuple[str, str]]:
+    def dummy(local_install_basepath: Path) -> Optional[VcsInfo]:
         if local_install_basepath.exists():
-            return "foo", "bar"
+            return VcsInfo(vcs_name="foo", commit_id="bar")
         return None
 
     assert len(verbose_version_info.vcs.VCS_COMMIT_ID_READER) == 1
