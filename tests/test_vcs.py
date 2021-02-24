@@ -2,7 +2,6 @@
 
 from pathlib import Path
 from typing import Optional
-from typing import Tuple
 from typing import Union
 
 import pytest
@@ -46,17 +45,15 @@ def test_run_vcs_commit_id_command(command_str: str, need_to_exist_path_child: s
         (DUMMY_PKG_ROOT / "local_install_src_pattern", None),
         (
             DUMMY_PKG_ROOT / "editable_install_with_dotgit",
-            ("git", "f2d32d41644de04122e478d6ef9639f5c2292eca"),
+            VcsInfo(vcs_name="git", commit_id="f2d32d41644de04122e478d6ef9639f5c2292eca"),
         ),
         (
             DUMMY_PKG_ROOT / "local_install_with_dotgit",
-            ("git", "df5c1e9302972fa5732a320d4cdef478cf783b8f"),
+            VcsInfo(vcs_name="git", commit_id="df5c1e9302972fa5732a320d4cdef478cf783b8f"),
         ),
     ),
 )
-def test_get_local_git_commit_id(
-    local_install_basepath: Path, expected: Union[Tuple[str, str], None]
-):
+def test_get_local_git_commit_id(local_install_basepath: Path, expected: Union[VcsInfo, None]):
     """git commit_id for locally installed packages"""
     assert get_local_git_commit_id(local_install_basepath) == expected
 
