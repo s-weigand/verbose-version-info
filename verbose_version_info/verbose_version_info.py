@@ -1,16 +1,6 @@
 """Main module."""
-from typing import NamedTuple
 
 from verbose_version_info.utils import distribution
-
-
-class VerboseVersionInfo(NamedTuple):
-    """Information container for verbose version information."""
-
-    release_version: str
-    url: str
-    commit_id: str
-    vcs_name: str
 
 
 def release_version(

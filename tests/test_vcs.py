@@ -10,7 +10,7 @@ from _pytest.monkeypatch import MonkeyPatch
 from tests import DUMMY_PKG_ROOT
 
 import verbose_version_info.vcs
-from verbose_version_info.vcs import VcsInfo
+from verbose_version_info.data_containers import VcsInfo
 from verbose_version_info.vcs import add_vcs_commit_id_reader
 from verbose_version_info.vcs import get_local_git_commit_id
 from verbose_version_info.vcs import run_vcs_commit_id_command

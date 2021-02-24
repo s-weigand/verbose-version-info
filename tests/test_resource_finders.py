@@ -11,12 +11,12 @@ from tests import DUMMY_PKG_ROOT
 from tests import PKG_ROOT
 
 import verbose_version_info.utils
+from verbose_version_info.data_containers import VerboseVersionInfo
 from verbose_version_info.metadata_compat import Distribution
 from verbose_version_info.resource_finders import file_uri_to_path
 from verbose_version_info.resource_finders import find_editable_install_basepath
 from verbose_version_info.resource_finders import find_url_info
 from verbose_version_info.resource_finders import local_install_basepath
-from verbose_version_info.verbose_version_info import VerboseVersionInfo
 
 
 def test_find_url_info_git_install():
@@ -47,8 +47,6 @@ def test_find_url_info_local_installation(distribution_name: str, version: str, 
     expected = VerboseVersionInfo(
         release_version=version,
         url=(DUMMY_PKG_ROOT / folder_name).as_uri(),
-        commit_id="",
-        vcs_name="",
     )
 
     assert result == expected
@@ -69,8 +67,6 @@ def test_find_url_info_none_url_install(distribution_name: str):
             VerboseVersionInfo(
                 release_version="0.0.2",
                 url="https://foo.bar",
-                commit_id="",
-                vcs_name="",
             ),
         ),
         (
@@ -78,8 +74,6 @@ def test_find_url_info_none_url_install(distribution_name: str):
             VerboseVersionInfo(
                 release_version="0.0.2",
                 url="https://foo.bar",
-                commit_id="",
-                vcs_name="",
             ),
         ),
         (
@@ -88,7 +82,6 @@ def test_find_url_info_none_url_install(distribution_name: str):
                 release_version="0.0.2",
                 url="https://foo.bar",
                 commit_id="foo",
-                vcs_name="",
             ),
         ),
     ),
@@ -214,8 +207,6 @@ def test_local_install_basepath_with_vv_info_not_none():
     expected_path = PKG_ROOT / "tests"
     result = local_install_basepath(
         "verbose-version-info",
-        vv_info=VerboseVersionInfo(
-            release_version="", url=expected_path.as_uri(), commit_id="", vcs_name=""
-        ),
+        vv_info=VerboseVersionInfo(release_version="", url=expected_path.as_uri()),
     )
     assert result == expected_path

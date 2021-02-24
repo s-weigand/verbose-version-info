@@ -8,8 +8,8 @@ from typing import Optional
 from urllib.parse import unquote
 from urllib.parse import urlparse
 
+from verbose_version_info.data_containers import VerboseVersionInfo
 from verbose_version_info.utils import distribution
-from verbose_version_info.verbose_version_info import VerboseVersionInfo
 
 
 def find_url_info(distribution_name: str) -> Optional[VerboseVersionInfo]:

@@ -3,18 +3,11 @@ import subprocess
 from pathlib import Path
 from typing import Callable
 from typing import List
-from typing import NamedTuple
 from typing import Optional
 from typing import Tuple
 from typing import Union
 
-
-class VcsInfo(NamedTuple):
-    """Container for vcs information."""
-
-    vcs_name: str
-    commit_id: str
-
+from verbose_version_info.data_containers import VcsInfo
 
 VcsCommitIdReader = Callable[[Path], Optional[VcsInfo]]
 
