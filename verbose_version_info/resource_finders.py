@@ -51,7 +51,7 @@ def find_url_info(distribution_name: str) -> Optional[VerboseVersionInfo]:
     If the package was not installed from an url or locally:
     ``pip install package-on-pypi``
 
-    >>> find_url_info("package-name")
+    >>> find_url_info("package-on-pypi")
     None
 
     Returns
@@ -60,7 +60,7 @@ def find_url_info(distribution_name: str) -> Optional[VerboseVersionInfo]:
         VerboseVersionInfo
             If the package was installed from a url resource.
         None
-            If the package was installed from a local resource or PyPi.
+            If the package was installed from as editable or PyPi.
     """
     dist = distribution(distribution_name)
     dist_files = dist.files

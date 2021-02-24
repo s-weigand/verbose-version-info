@@ -1,10 +1,13 @@
 """Tests for ``verbose_version_info`` package."""
 
 import pytest
+from tests import DUMMY_PKG_ROOT
 
 from verbose_version_info import SETTINGS
 from verbose_version_info import __version__
+from verbose_version_info.data_containers import VerboseVersionInfo
 from verbose_version_info.verbose_version_info import release_version
+from verbose_version_info.verbose_version_info import vv_info
 
 
 @pytest.mark.parametrize(
@@ -36,3 +39,62 @@ def test_changing_not_found_version_str(monkeypatch):
     monkeypatch.setitem(SETTINGS, "not_found_version_str", "Not Installed")
 
     assert release_version("not-a-distribution") == "Not Installed"
+
+
+@pytest.mark.parametrize(
+    "distribution_name, expected",
+    (
+        (
+            "git_install_test_distribution",
+            VerboseVersionInfo(
+                release_version="0.0.2",
+                url="https://github.com/s-weigand/git-install-test-distribution.git",
+                commit_id="a7f7bf28dbe9bfceba1af8a259383e398a942ad0",
+                vcs_name="git",
+            ),
+        ),
+        (
+            "editable_install_with_dotgit",
+            VerboseVersionInfo(
+                release_version="0.0.5",
+                url=(DUMMY_PKG_ROOT / "editable_install_with_dotgit").as_uri(),
+                commit_id="f2d32d41644de04122e478d6ef9639f5c2292eca",
+                vcs_name="git",
+            ),
+        ),
+        (
+            "local_install_with_dotgit",
+            VerboseVersionInfo(
+                release_version="0.0.10",
+                url=(DUMMY_PKG_ROOT / "local_install_with_dotgit").as_uri(),
+                commit_id="df5c1e9302972fa5732a320d4cdef478cf783b8f",
+                vcs_name="git",
+            ),
+        ),
+        (
+            "editable_install_setup_py",
+            VerboseVersionInfo(
+                release_version="0.0.4",
+                url=(DUMMY_PKG_ROOT / "editable_install_setup_py").as_uri(),
+            ),
+        ),
+        (
+            "pytest",
+            VerboseVersionInfo(
+                release_version=pytest.__version__,
+            ),
+        ),
+    ),
+)
+def test_verbose_version_info(distribution_name: str, expected: VerboseVersionInfo):
+    """ "Verbose version for differently installed packages.
+    - Installed from url with vcs (git_install_test_distribution)
+    - Editable installed with vcs (editable_install_with_dotgit)
+    - Source installed with vcs (local_install_with_dotgit)
+    - Editable installed no vcs (editable_install_setup_py)
+    - PyPi installed (pytest)
+
+    """
+    result = vv_info(distribution_name)
+
+    assert result == expected
