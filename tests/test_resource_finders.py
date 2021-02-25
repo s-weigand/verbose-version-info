@@ -12,7 +12,6 @@ from tests import PKG_ROOT
 
 import verbose_version_info.utils
 from verbose_version_info.data_containers import VerboseVersionInfo
-from verbose_version_info.metadata_compat import Distribution
 from verbose_version_info.resource_finders import egg_link_lines
 from verbose_version_info.resource_finders import file_uri_to_path
 from verbose_version_info.resource_finders import find_editable_install_basepath
@@ -103,24 +102,6 @@ def test_find_url_info_url_install(
     result = find_url_info("git-install-test-distribution")
 
     assert result == expected
-
-
-def test_find_url_info_url_install_broken_dist(monkeypatch: MonkeyPatch):
-    """Distribution files property is None
-    I.e. if RECORD for dist-info or SOURCES.txt for egg-info.
-
-    See: importlib.metadata.Distribution.files
-    """
-    monkeypatch.setattr(Distribution, "files", None)
-    monkeypatch.setattr(
-        verbose_version_info.utils,
-        "distribution",
-        verbose_version_info.utils.distribution.__wrapped__,
-    )
-
-    result = find_url_info("git-install-test-distribution")
-
-    assert result is None
 
 
 @pytest.mark.parametrize(

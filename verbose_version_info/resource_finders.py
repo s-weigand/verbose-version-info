@@ -10,6 +10,7 @@ from urllib.parse import unquote
 from urllib.parse import urlparse
 
 from verbose_version_info.data_containers import VerboseVersionInfo
+from verbose_version_info.utils import dist_files
 from verbose_version_info.utils import distribution
 
 
@@ -64,18 +65,16 @@ def find_url_info(distribution_name: str) -> Optional[VerboseVersionInfo]:
             If the package was installed from as editable or PyPi.
     """
     dist = distribution(distribution_name)
-    dist_files = dist.files
-    if dist_files is not None:
-        for path in dist_files:
-            if path.name == "direct_url.json":
-                vcs_dict = json.loads(path.read_text())
-                vcs_info = vcs_dict.get("vcs_info", {})
-                return VerboseVersionInfo(
-                    release_version=dist.version,
-                    url=vcs_dict.get("url", ""),
-                    commit_id=vcs_info.get("commit_id", ""),
-                    vcs_name=vcs_info.get("vcs", ""),
-                )
+    for path in dist_files(distribution_name):
+        if path.name == "direct_url.json":
+            vcs_dict = json.loads(path.read_text())
+            vcs_info = vcs_dict.get("vcs_info", {})
+            return VerboseVersionInfo(
+                release_version=dist.version,
+                url=vcs_dict.get("url", ""),
+                commit_id=vcs_info.get("commit_id", ""),
+                vcs_name=vcs_info.get("vcs", ""),
+            )
 
     return None
 

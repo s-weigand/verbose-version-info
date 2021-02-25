@@ -2,8 +2,10 @@
 
 
 from functools import lru_cache
+from importlib.metadata import PackagePath
 from os import PathLike
 from pathlib import Path
+from typing import List
 from typing import Union
 
 from verbose_version_info import SETTINGS
@@ -126,3 +128,30 @@ def distribution(
         return _distribution(distribution_name)
     except PackageNotFoundError:
         return NotFoundDistribution()
+
+
+def dist_files(
+    distribution_name: str,
+) -> List[PackagePath]:
+    """List of PackagePaths even if the package is broken.
+
+    This is a convenience function since Distribution.files
+    could be None.
+    I.e. if RECORD for dist-info or SOURCES.txt for egg-info.
+
+    See: importlib.metadata.Distribution.files
+
+    Parameters
+    ----------
+    distribution_name : str
+        The name of the package as a string.
+
+    Returns
+    -------
+    List[PackagePath]
+        Paths of files used by the package.
+    """
+    dist_files = distribution(distribution_name).files
+    if dist_files is not None:
+        return dist_files
+    return []
