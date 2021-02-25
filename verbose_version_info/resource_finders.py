@@ -3,6 +3,7 @@
 import json
 import os
 import sys
+from datetime import datetime
 from pathlib import Path
 from typing import List
 from typing import Optional
@@ -190,3 +191,27 @@ def local_install_basepath(
         return file_uri_to_path(vv_info.url)
     else:
         return find_editable_install_basepath(distribution_name)
+
+
+def dist_info_mtime(distribution_name: str) -> Optional[datetime]:
+    """Modification time of the dist info, None if editable installed.
+
+    This should basically be the same as the installation time for
+    packages installed from source in a none editable mode.
+
+    Parameters
+    ----------
+    distribution_name : str
+        The name of the distribution package as a string.
+
+    Returns
+    -------
+    Optional[datetime]
+        Time the dist-info was packaged.
+    """
+    for path in dist_files(distribution_name):
+        if "dist-info" in str(path):
+            mtime = os.stat(path.locate()).st_mtime
+            return datetime.fromtimestamp(mtime)
+
+    return None

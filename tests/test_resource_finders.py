@@ -1,8 +1,5 @@
-try:
-    from importlib.metadata import PackagePath
-except ImportError:
-    from importlib_metadata import PackagePath  # type: ignore
-
+import os
+from datetime import datetime
 from pathlib import Path
 
 import pytest
@@ -12,6 +9,8 @@ from tests import PKG_ROOT
 
 import verbose_version_info.utils
 from verbose_version_info.data_containers import VerboseVersionInfo
+from verbose_version_info.metadata_compat import PackagePath
+from verbose_version_info.resource_finders import dist_info_mtime
 from verbose_version_info.resource_finders import egg_link_lines
 from verbose_version_info.resource_finders import file_uri_to_path
 from verbose_version_info.resource_finders import find_editable_install_basepath
@@ -221,3 +220,28 @@ def test_local_install_basepath_with_vv_info_not_none():
         vv_info=VerboseVersionInfo(release_version="", url=expected_path.as_uri()),
     )
     assert result == expected_path
+
+
+@pytest.mark.parametrize(
+    "distribution_name,expected",
+    (
+        ("git-install-test-distribution", datetime.fromtimestamp(0)),
+        ("local_install", datetime.fromtimestamp(0)),
+        ("local_install_with_spaces_in_path", datetime.fromtimestamp(0)),
+        ("local_install_src_pattern", datetime.fromtimestamp(0)),
+        ("local_install_with_dotgit", datetime.fromtimestamp(0)),
+        ("editable_install_setup_py", None),
+        ("not-a-distribution", None),
+    ),
+)
+def test_dist_info_mtime(monkeypatch: MonkeyPatch, distribution_name: str, expected: str):
+    """Since the mtime of the dummy packages can't be controlled it needs to be mocked."""
+
+    class MockStat:
+        st_mtime = 0
+
+    monkeypatch.setattr(os, "stat", lambda x: MockStat())
+
+    result = dist_info_mtime(distribution_name)
+
+    assert result == expected
