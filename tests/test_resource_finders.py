@@ -1,9 +1,8 @@
-import os
-from datetime import datetime
 from pathlib import Path
 
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
+from tests import DUMMY_MTIME_DATE
 from tests import DUMMY_PKG_ROOT
 from tests import PKG_ROOT
 
@@ -225,23 +224,18 @@ def test_local_install_basepath_with_vv_info_not_none():
 @pytest.mark.parametrize(
     "distribution_name,expected",
     (
-        ("git-install-test-distribution", datetime.fromtimestamp(0)),
-        ("local_install", datetime.fromtimestamp(0)),
-        ("local_install_with_spaces_in_path", datetime.fromtimestamp(0)),
-        ("local_install_src_pattern", datetime.fromtimestamp(0)),
-        ("local_install_with_dotgit", datetime.fromtimestamp(0)),
+        ("git-install-test-distribution", DUMMY_MTIME_DATE),
+        ("local_install", DUMMY_MTIME_DATE),
+        ("local_install_with_spaces_in_path", DUMMY_MTIME_DATE),
+        ("local_install_src_pattern", DUMMY_MTIME_DATE),
+        ("local_install_with_dotgit", DUMMY_MTIME_DATE),
         ("editable_install_setup_py", None),
         ("not-a-distribution", None),
     ),
 )
-def test_dist_info_mtime(monkeypatch: MonkeyPatch, distribution_name: str, expected: str):
+@pytest.mark.usefixtures("mocked_os_stat_mtime")
+def test_dist_info_mtime(distribution_name: str, expected: str):
     """Since the mtime of the dummy packages can't be controlled it needs to be mocked."""
-
-    class MockStat:
-        st_mtime = 0
-
-    monkeypatch.setattr(os, "stat", lambda x: MockStat())
-
     result = dist_info_mtime(distribution_name)
 
     assert result == expected
