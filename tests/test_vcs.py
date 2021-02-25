@@ -45,11 +45,11 @@ def test_run_vcs_commit_id_command(command_str: str, need_to_exist_path_child: s
         (DUMMY_PKG_ROOT / "local_install_src_pattern", None),
         (
             DUMMY_PKG_ROOT / "editable_install_with_dotgit",
-            VcsInfo(vcs_name="git", commit_id="f2d32d41644de04122e478d6ef9639f5c2292eca"),
+            VcsInfo(vcs_name="git", commit_id="f3c8d36715f7cd14dc73e6b3ae76cb2669c97b5f"),
         ),
         (
             DUMMY_PKG_ROOT / "local_install_with_dotgit",
-            VcsInfo(vcs_name="git", commit_id="df5c1e9302972fa5732a320d4cdef478cf783b8f"),
+            VcsInfo(vcs_name="git", commit_id="ff76038f76fcc106885cb9f19748e989d7d862b9"),
         ),
     ),
 )

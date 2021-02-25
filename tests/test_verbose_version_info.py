@@ -58,7 +58,7 @@ def test_changing_not_found_version_str(monkeypatch):
             VerboseVersionInfo(
                 release_version="0.0.5",
                 url=(DUMMY_PKG_ROOT / "editable_install_with_dotgit").as_uri(),
-                commit_id="f2d32d41644de04122e478d6ef9639f5c2292eca",
+                commit_id="f3c8d36715f7cd14dc73e6b3ae76cb2669c97b5f",
                 vcs_name="git",
             ),
         ),
@@ -67,7 +67,7 @@ def test_changing_not_found_version_str(monkeypatch):
             VerboseVersionInfo(
                 release_version="0.0.10",
                 url=(DUMMY_PKG_ROOT / "local_install_with_dotgit").as_uri(),
-                commit_id="df5c1e9302972fa5732a320d4cdef478cf783b8f",
+                commit_id="ff76038f76fcc106885cb9f19748e989d7d862b9",
                 vcs_name="git",
             ),
         ),

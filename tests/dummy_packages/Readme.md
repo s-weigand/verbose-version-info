@@ -37,7 +37,8 @@ src pattern package
 
 - install: `pip install -e tests/dummy_packages/editable_install_with_dotgit`
 - version: `0.0.5`
-- commit: `f2d32d41644de04122e478d6ef9639f5c2292eca`
+- commit_id (initial): `f2d32d41644de04122e478d6ef9639f5c2292eca`
+- commit_id (latest): `f3c8d36715f7cd14dc73e6b3ae76cb2669c97b5f`
 
 ## local_install
 
@@ -66,4 +67,5 @@ example for a local installation from source with a `.git` next to `setup.py`
 
 - install: `pip install tests/dummy_packages/local_install_with_dotgit`
 - version: `0.0.10`
-- commit: `df5c1e9302972fa5732a320d4cdef478cf783b8f`
+- commit_id (initial): `df5c1e9302972fa5732a320d4cdef478cf783b8f`
+- commit_id (latest): `ff76038f76fcc106885cb9f19748e989d7d862b9`
