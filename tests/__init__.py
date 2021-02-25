@@ -6,4 +6,6 @@ TESTS_ROOT = Path(__file__).parent
 PKG_ROOT = TESTS_ROOT.parent
 DUMMY_PKG_ROOT = TESTS_ROOT / "dummy_packages"
 
-DUMMY_MTIME_DATE = datetime.fromtimestamp(0)
+MTIME_DATE_PAST = datetime(2021, 2, 24)
+
+MTIME_DATE_NOW = datetime.now()
