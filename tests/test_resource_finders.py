@@ -13,6 +13,7 @@ from tests import PKG_ROOT
 import verbose_version_info.utils
 from verbose_version_info.data_containers import VerboseVersionInfo
 from verbose_version_info.metadata_compat import Distribution
+from verbose_version_info.resource_finders import egg_link_lines
 from verbose_version_info.resource_finders import file_uri_to_path
 from verbose_version_info.resource_finders import find_editable_install_basepath
 from verbose_version_info.resource_finders import find_url_info
@@ -120,6 +121,35 @@ def test_find_url_info_url_install_broken_dist(monkeypatch: MonkeyPatch):
     result = find_url_info("git-install-test-distribution")
 
     assert result is None
+
+
+@pytest.mark.parametrize(
+    "distribution_name,expected",
+    (
+        ("git-install-test-distribution", None),
+        (
+            "editable_install_setup_cfg",
+            [str((DUMMY_PKG_ROOT / "editable_install_setup_cfg").resolve()), "."],
+        ),
+        (
+            "editable_install_setup_py",
+            [str((DUMMY_PKG_ROOT / "editable_install_setup_py").resolve()), "."],
+        ),
+        (
+            "editable_install_src_pattern",
+            [str((DUMMY_PKG_ROOT / "editable_install_src_pattern" / "src").resolve()), "../"],
+        ),
+        (
+            "editable_install_with_dotgit",
+            [str((DUMMY_PKG_ROOT / "editable_install_with_dotgit").resolve()), "."],
+        ),
+        ("not-a-distribution", None),
+        ("pytest", None),
+    ),
+)
+def test_egg_link_lines(distribution_name: str, expected: str):
+    """Lines of the egglinkfile for editable installations."""
+    assert egg_link_lines(distribution_name) == expected
 
 
 @pytest.mark.parametrize(

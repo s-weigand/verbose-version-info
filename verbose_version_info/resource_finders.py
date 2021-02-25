@@ -4,6 +4,7 @@ import json
 import os
 import sys
 from pathlib import Path
+from typing import List
 from typing import Optional
 from urllib.parse import unquote
 from urllib.parse import urlparse
@@ -79,8 +80,8 @@ def find_url_info(distribution_name: str) -> Optional[VerboseVersionInfo]:
     return None
 
 
-def find_editable_install_basepath(distribution_name: str) -> Optional[Path]:
-    """Extract the basepath of an as editable installed package.
+def egg_link_lines(distribution_name: str) -> Optional[List[str]]:
+    """Lines of an ``.egg-link`` file if it exists.
 
     This assumes that a file with ``<distribution_name>.egg-link`` exists
     somewhere in the path (which is at least for pip the case).
@@ -92,17 +93,44 @@ def find_editable_install_basepath(distribution_name: str) -> Optional[Path]:
 
     Returns
     -------
-    Optional[Path]
-        Path to the root of an as editable installed package.
-        E.g. ``pip install -e .``
+    Optional[List[str]]
+        Lines read from ``<distribution_name>.egg-link`` with striped newline.
+
+    See Also
+    --------
+    find_editable_install_basepath
     """
     distribution_name = distribution(distribution_name).metadata.get("name")
     for path_item in sys.path:
         egg_link = os.path.join(path_item, f"{distribution_name}.egg-link")
         if os.path.isfile(egg_link):
             with open(egg_link) as f:
-                base_path = os.path.join(*f.read().splitlines(keepends=False))
-                return Path(base_path).resolve()
+                return f.read().splitlines(keepends=False)
+    return None
+
+
+def find_editable_install_basepath(distribution_name: str) -> Optional[Path]:
+    """Find basepath of an as editable installed package.
+
+    Parameters
+    ----------
+    distribution_name : str
+        The name of the distribution package as a string.
+
+    Returns
+    -------
+    Optional[Path]
+        Path to the root of an as editable installed package.
+        E.g. ``pip install -e .``
+
+    See Also
+    --------
+    egg_link_lines
+    """
+    egg_link_parts = egg_link_lines(distribution_name)
+    if egg_link_parts is not None:
+        base_path = os.path.join(*egg_link_parts)
+        return Path(base_path).resolve()
     return None
 
 
