@@ -1,7 +1,4 @@
 # verbose-version-info
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 <!-- [![PyPi Version](https://img.shields.io/pypi/v/verbose_version_info.svg)](https://pypi.org/project/verbose-version-info/) -->
 <!-- [![Conda Version](https://img.shields.io/conda/vn/conda-forge/verbose-version-info.svg)](https://anaconda.org/conda-forge/verbose-version-info) -->
