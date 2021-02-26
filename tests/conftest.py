@@ -1,5 +1,6 @@
 """Pytest fixturesfor the testsuite."""
 import os
+from copy import copy
 from datetime import datetime
 
 import pytest
@@ -12,9 +13,18 @@ def mock_os_stat_mtime(monkeypatch: MonkeyPatch):
 
         timestamp = int(date_obj.timestamp())
 
-        class MockStat:
-            st_mtime = timestamp
+        # Prevent max recursion error
+        _stat = copy(os.stat)
 
-        monkeypatch.setattr(os, "stat", lambda x: MockStat())
+        def mock_stat(*args, **kwargs):
+            result = _stat(*args, **kwargs)
+
+            class MockStatResult:
+                st_mode = result.st_mode
+                st_mtime = timestamp
+
+            return MockStatResult()
+
+        monkeypatch.setattr(os, "stat", mock_stat)
 
     yield mock_func
