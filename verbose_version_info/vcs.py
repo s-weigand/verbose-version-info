@@ -52,7 +52,7 @@ def run_vcs_commit_id_command(
         Name if the vcs, which will be used as part of the result.
     commit_id_command : Union[List[str], Tuple[str, ...]]
         Shell command to return the commit_id.
-        E.g. for ``git``: ``("git", "rev-parse", "HEAD")``
+        E.g. for ``git``: ``("git", "log", "--before", f"'{date_string}'", "-n", "1", "--pretty=format:%H",)``
     local_install_basepath : Path
         Basepath of the local installation.
     need_to_exist_path_child : str
@@ -67,7 +67,7 @@ def run_vcs_commit_id_command(
     See Also
     --------
     get_local_git_commit_id
-    """
+    """  # noqa: E501
     if (local_install_basepath / need_to_exist_path_child).exists():
         vcs_output = subprocess.run(
             commit_id_command, cwd=local_install_basepath, stdout=subprocess.PIPE
@@ -103,7 +103,15 @@ def local_git_commit_id(local_install_basepath: Path, dist_mtime: datetime) -> O
     date_string = dist_mtime.strftime("%Y-%m-%d %H:%M:%S")
     return run_vcs_commit_id_command(
         vcs_name="git",
-        commit_id_command=("git", "rev-parse", f"HEAD@{{'{date_string}'}}"),
+        commit_id_command=(
+            "git",
+            "log",
+            "--before",
+            f"'{date_string}'",
+            "-n",
+            "1",
+            "--pretty=format:%H",
+        ),
         local_install_basepath=local_install_basepath,
         need_to_exist_path_child=".git",
     )
