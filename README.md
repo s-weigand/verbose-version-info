@@ -29,11 +29,16 @@ Implemented
 - Commit_id for `pip install git+<url>`
 - Split off cli to an extra
 - Detect `pip install -e` installation and get path
-- commit sha for `pip install -e .` if `.git` exists
-- commit sha for `pip install .` if `.git` exists (possible?)
+- commit id for `pip install -e .` if `.git` exists
+- commit id for `pip install .` if `.git` exists
+- Determine dist time for `pip install .` (needed for better commit_id)
+- get commit id for `pip install .` if `.git` exists, for the closest commit at installation time
 
 TODO
 
+- use find_url_info in vv_info for tarball installation
+- Add dist_mtime time to VerboseVersionInfo
+- Add warning if repo of editable install is dirty (`git status -s != ""` )
 - Reset settings function (mostly notebook showoff)
 - setting formatter: Mapping[str, format_function] (used for sha)
 - extract minimal required versions (useful for CI tests, of the min version)

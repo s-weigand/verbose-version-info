@@ -1,7 +1,11 @@
 """Tests for ``verbose_version_info`` package."""
+from datetime import datetime
+from typing import Callable
 
 import pytest
 from tests import DUMMY_PKG_ROOT
+from tests import MTIME_DATE_NOW
+from tests import MTIME_DATE_PAST
 
 from verbose_version_info import SETTINGS
 from verbose_version_info import __version__
@@ -42,10 +46,11 @@ def test_changing_not_found_version_str(monkeypatch):
 
 
 @pytest.mark.parametrize(
-    "distribution_name, expected",
+    "distribution_name, dist_mtime, expected",
     (
         (
             "git_install_test_distribution",
+            MTIME_DATE_PAST,
             VerboseVersionInfo(
                 release_version="0.0.2",
                 url="https://github.com/s-weigand/git-install-test-distribution.git",
@@ -55,6 +60,7 @@ def test_changing_not_found_version_str(monkeypatch):
         ),
         (
             "editable_install_with_dotgit",
+            MTIME_DATE_PAST,
             VerboseVersionInfo(
                 release_version="0.0.5",
                 url=(DUMMY_PKG_ROOT / "editable_install_with_dotgit").as_uri(),
@@ -64,6 +70,17 @@ def test_changing_not_found_version_str(monkeypatch):
         ),
         (
             "local_install_with_dotgit",
+            MTIME_DATE_PAST,
+            VerboseVersionInfo(
+                release_version="0.0.10",
+                url=(DUMMY_PKG_ROOT / "local_install_with_dotgit").as_uri(),
+                commit_id="df5c1e9302972fa5732a320d4cdef478cf783b8f",
+                vcs_name="git",
+            ),
+        ),
+        (
+            "local_install_with_dotgit",
+            MTIME_DATE_NOW,
             VerboseVersionInfo(
                 release_version="0.0.10",
                 url=(DUMMY_PKG_ROOT / "local_install_with_dotgit").as_uri(),
@@ -73,6 +90,7 @@ def test_changing_not_found_version_str(monkeypatch):
         ),
         (
             "editable_install_setup_py",
+            MTIME_DATE_PAST,
             VerboseVersionInfo(
                 release_version="0.0.4",
                 url=(DUMMY_PKG_ROOT / "editable_install_setup_py").as_uri(),
@@ -80,13 +98,19 @@ def test_changing_not_found_version_str(monkeypatch):
         ),
         (
             "pytest",
+            MTIME_DATE_PAST,
             VerboseVersionInfo(
                 release_version=pytest.__version__,
             ),
         ),
     ),
 )
-def test_verbose_version_info(distribution_name: str, expected: VerboseVersionInfo):
+def test_verbose_version_info(
+    mock_os_stat_mtime: Callable[[datetime], None],
+    distribution_name: str,
+    dist_mtime: datetime,
+    expected: VerboseVersionInfo,
+):
     """ "Verbose version for differently installed packages.
     - Installed from url with vcs (git_install_test_distribution)
     - Editable installed with vcs (editable_install_with_dotgit)
@@ -95,6 +119,7 @@ def test_verbose_version_info(distribution_name: str, expected: VerboseVersionIn
     - PyPi installed (pytest)
 
     """
+    mock_os_stat_mtime(dist_mtime)
     result = vv_info(distribution_name)
 
     assert result == expected

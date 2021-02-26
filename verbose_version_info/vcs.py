@@ -1,5 +1,6 @@
 """Module containing code for version control system retrieval."""
 import subprocess
+from datetime import datetime
 from pathlib import Path
 from typing import Callable
 from typing import List
@@ -9,7 +10,7 @@ from typing import Union
 
 from verbose_version_info.data_containers import VcsInfo
 
-VcsCommitIdReader = Callable[[Path], Optional[VcsInfo]]
+VcsCommitIdReader = Callable[[Path, datetime], Optional[VcsInfo]]
 
 VCS_COMMIT_ID_READERS: List[VcsCommitIdReader] = []
 
@@ -60,7 +61,7 @@ def run_vcs_commit_id_command(
 
     Returns
     -------
-    Optional[Tuple[str, str]]
+    Optional[VcsInfo]
         (vcs_name, commit_id)
 
     See Also
@@ -78,26 +79,31 @@ def run_vcs_commit_id_command(
 
 
 @add_vcs_commit_id_reader
-def get_local_git_commit_id(local_install_basepath: Path) -> Optional[VcsInfo]:
+def local_git_commit_id(local_install_basepath: Path, dist_mtime: datetime) -> Optional[VcsInfo]:
     """Get git commit_id of locally installed package.
 
     Parameters
     ----------
     local_install_basepath : Path
         Basepath of the local installation.
+    dist_mtime: datetime
+        Time the packaged distribution was modified.
+        This is only important for none editable installations from source.
 
     Returns
     -------
-    Optional[Tuple[str, str]]
+    Optional[VcsInfo]
         (vcs_name, commit_id)
 
     See Also
     --------
     run_vcs_commit_id_command
+    verbose_version_info.resource_finders.dist_info_mtime
     """
+    date_string = dist_mtime.strftime("%Y-%m-%d %H:%M:%S")
     return run_vcs_commit_id_command(
         vcs_name="git",
-        commit_id_command=("git", "rev-parse", "HEAD"),
+        commit_id_command=("git", "rev-parse", f"HEAD@{{'{date_string}'}}"),
         local_install_basepath=local_install_basepath,
         need_to_exist_path_child=".git",
     )

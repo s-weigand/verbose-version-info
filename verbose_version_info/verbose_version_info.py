@@ -1,6 +1,9 @@
 """Main module."""
 
+from datetime import datetime
+
 from verbose_version_info.data_containers import VerboseVersionInfo
+from verbose_version_info.resource_finders import dist_info_mtime
 from verbose_version_info.resource_finders import find_url_info
 from verbose_version_info.resource_finders import local_install_basepath
 from verbose_version_info.utils import distribution
@@ -44,6 +47,7 @@ def vv_info(distribution_name: str) -> VerboseVersionInfo:
         Verbose version information of the installed package,
         as detailed as possible.
     """  # noqa: E501
+    dist_mtime = dist_info_mtime(distribution_name)
     url_vv_info = find_url_info(distribution_name)
     if url_vv_info is not None and url_vv_info.commit_id and url_vv_info.vcs_name:
         return url_vv_info
@@ -51,7 +55,8 @@ def vv_info(distribution_name: str) -> VerboseVersionInfo:
         local_path = local_install_basepath(distribution_name, vv_info=url_vv_info)
         if local_path is not None:
             for vsc_reader in VCS_COMMIT_ID_READERS:
-                vcs_info = vsc_reader(local_path)
+                dist_mtime = dist_mtime or datetime.now()
+                vcs_info = vsc_reader(local_path, dist_mtime)
                 if vcs_info is not None:
                     return VerboseVersionInfo(
                         release_version=release_version(distribution_name),
