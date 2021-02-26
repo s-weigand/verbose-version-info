@@ -2,7 +2,6 @@
 
 
 from functools import lru_cache
-from importlib.metadata import PackagePath
 from os import PathLike
 from pathlib import Path
 from typing import List
@@ -11,6 +10,7 @@ from typing import Union
 from verbose_version_info import SETTINGS
 from verbose_version_info.metadata_compat import Distribution
 from verbose_version_info.metadata_compat import PackageNotFoundError
+from verbose_version_info.metadata_compat import PackagePath
 from verbose_version_info.metadata_compat import _distribution
 
 
