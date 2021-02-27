@@ -32,6 +32,17 @@ def test_find_url_info_git_install():
     assert result == expected
 
 
+def test_find_url_info_tarball_install():
+    """Vsc information for tarball url installed package."""
+    result = find_url_info("tarball_test_distribution")
+    expected = VerboseVersionInfo(
+        release_version="0.0.11",
+        url="https://github.com/s-weigand/tarball-test-distribution/archive/main.zip",
+    )
+
+    assert result == expected
+
+
 @pytest.mark.parametrize(
     "distribution_name, version, folder_name",
     (

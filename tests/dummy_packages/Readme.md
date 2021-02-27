@@ -69,3 +69,10 @@ example for a local installation from source with a `.git` next to `setup.py`
 - version: `0.0.10`
 - commit_id (initial): `df5c1e9302972fa5732a320d4cdef478cf783b8f`
 - commit_id (latest): `ff76038f76fcc106885cb9f19748e989d7d862b9`
+
+## tarball_test_distribution
+
+package installed from tarball url
+
+- install: `pip install https://github.com/s-weigand/tarball-test-distribution/archive/main.zip`
+- version: `0.0.11`

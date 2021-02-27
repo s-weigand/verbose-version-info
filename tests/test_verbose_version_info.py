@@ -29,6 +29,7 @@ from verbose_version_info.verbose_version_info import vv_info
         ("local_install_with_spaces_in_path", "0.0.8"),
         ("local_install_src_pattern", "0.0.9"),
         ("local_install_with_dotgit", "0.0.10"),
+        ("tarball_test_distribution", "0.0.11"),
         ("not-a-distribution", "Unknown"),
     ),
 )
@@ -97,6 +98,14 @@ def test_changing_not_found_version_str(monkeypatch):
             ),
         ),
         (
+            "tarball_test_distribution",
+            MTIME_DATE_PAST,
+            VerboseVersionInfo(
+                release_version="0.0.11",
+                url="https://github.com/s-weigand/tarball-test-distribution/archive/main.zip",
+            ),
+        ),
+        (
             "pytest",
             MTIME_DATE_PAST,
             VerboseVersionInfo(
@@ -105,7 +114,7 @@ def test_changing_not_found_version_str(monkeypatch):
         ),
     ),
 )
-def test_verbose_version_info(
+def test_vv_info(
     mock_os_stat_mtime: Callable[[datetime], None],
     distribution_name: str,
     dist_mtime: datetime,
@@ -116,6 +125,7 @@ def test_verbose_version_info(
     - Editable installed with vcs (editable_install_with_dotgit)
     - Source installed with vcs (local_install_with_dotgit)
     - Editable installed no vcs (editable_install_setup_py)
+    - Installed from archive (tarball_test_distribution)
     - PyPi installed (pytest)
 
     """
