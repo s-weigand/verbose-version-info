@@ -5,6 +5,9 @@ from datetime import datetime
 
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
+from tests import MTIME_DATE_NOW
+
+import verbose_version_info.resource_finders
 
 
 @pytest.fixture
@@ -26,5 +29,8 @@ def mock_os_stat_mtime(monkeypatch: MonkeyPatch):
             return MockStatResult()
 
         monkeypatch.setattr(os, "stat", mock_stat)
+        monkeypatch.setattr(
+            verbose_version_info.resource_finders, "_datetime_now", lambda: MTIME_DATE_NOW
+        )
 
     yield mock_func

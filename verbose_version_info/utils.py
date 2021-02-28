@@ -1,6 +1,7 @@
 """Utility modules with convenience functions."""
 
 
+from datetime import datetime
 from functools import lru_cache
 from os import PathLike
 from pathlib import Path
@@ -155,3 +156,14 @@ def dist_files(
     if dist_files is not None:
         return dist_files
     return []
+
+
+def _datetime_now() -> datetime:
+    """Wrap ``datetime.now`` to easily mock it for testing.
+
+    Returns
+    -------
+    datetime
+        Current datetime.
+    """
+    return datetime.now()

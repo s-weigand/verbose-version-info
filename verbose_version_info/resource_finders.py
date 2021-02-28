@@ -11,11 +11,38 @@ from urllib.parse import unquote
 from urllib.parse import urlparse
 
 from verbose_version_info.data_containers import VerboseVersionInfo
+from verbose_version_info.utils import _datetime_now
 from verbose_version_info.utils import dist_files
 from verbose_version_info.utils import distribution
 
 
-def find_url_info(distribution_name: str) -> Optional[VerboseVersionInfo]:
+def dist_info_mtime(distribution_name: str) -> datetime:
+    """Modification time of the dist info, current time if editable installed.
+
+    This should basically be the same as the installation time for
+    packages installed from source in a none editable mode.
+
+    Parameters
+    ----------
+    distribution_name : str
+        The name of the distribution package as a string.
+
+    Returns
+    -------
+    datetime
+        Time the dist-info was packaged or current time if not found.
+    """
+    for path in dist_files(distribution_name):
+        if "dist-info" in str(path):
+            mtime = os.stat(path.locate()).st_mtime
+            return datetime.fromtimestamp(mtime)
+
+    return _datetime_now()
+
+
+def find_url_info(
+    distribution_name: str, dist_time: Optional[datetime] = None
+) -> Optional[VerboseVersionInfo]:
     """Extract package information for packages installed from an url or locally.
 
     If the packages was installed using an url 'direct_url.json'
@@ -27,24 +54,30 @@ def find_url_info(distribution_name: str) -> Optional[VerboseVersionInfo]:
     ----------
     distribution_name : str
         The name of the distribution package as a string.
+    dist_time : datetime
+        Datetime instance of when the distribution was created.
 
     Examples
     --------
     If the package was installed using git:
     ``pip install git+https://github.com/s-weigand/git-install-test-distribution.git``
 
-    >>> find_url_info("git-install-test-distribution")
+    >>> find_url_info("git-install-test-distribution", datetime(2021, 2, 28))
     VcsInfo(
+        release_version="0.0.2",
+        dist_time=datetime(2021, 2, 28),
         url="https://github.com/s-weigand/git-install-test-distribution.git",
         commit_id="a7f7bf28dbe9bfceba1af8a259383e398a942ad0",
         vcs="git",
     )
 
-    If the package was installed by an url to a tarball:
+    If the package was installed by an url to an archive on '2021-02-27':
     ``pip install https://github.com/s-weigand/git-install-test-distribution/archive/main.zip``
 
     >>> find_url_info("git-install-test-distribution")
     VcsInfo(
+        release_version="0.0.2",
+        dist_time=datetime(2021, 2, 27),
         url="https://github.com/s-weigand/git-install-test-distribution/archive/main.zip",
         commit_id="",
         vcs="",
@@ -66,12 +99,15 @@ def find_url_info(distribution_name: str) -> Optional[VerboseVersionInfo]:
             If the package was installed from as editable or PyPi.
     """
     dist = distribution(distribution_name)
+    if dist_time is None:
+        dist_time = dist_info_mtime(distribution_name)
     for path in dist_files(distribution_name):
         if path.name == "direct_url.json":
             vcs_dict = json.loads(path.read_text())
             vcs_info = vcs_dict.get("vcs_info", {})
             return VerboseVersionInfo(
                 release_version=dist.version,
+                dist_time=dist_time,
                 url=vcs_dict.get("url", ""),
                 commit_id=vcs_info.get("commit_id", ""),
                 vcs_name=vcs_info.get("vcs", ""),
@@ -191,27 +227,3 @@ def local_install_basepath(
         return file_uri_to_path(vv_info.url)
     else:
         return find_editable_install_basepath(distribution_name)
-
-
-def dist_info_mtime(distribution_name: str) -> Optional[datetime]:
-    """Modification time of the dist info, None if editable installed.
-
-    This should basically be the same as the installation time for
-    packages installed from source in a none editable mode.
-
-    Parameters
-    ----------
-    distribution_name : str
-        The name of the distribution package as a string.
-
-    Returns
-    -------
-    Optional[datetime]
-        Time the dist-info was packaged.
-    """
-    for path in dist_files(distribution_name):
-        if "dist-info" in str(path):
-            mtime = os.stat(path.locate()).st_mtime
-            return datetime.fromtimestamp(mtime)
-
-    return None

@@ -1,4 +1,5 @@
 """Module for data container classes."""
+from datetime import datetime
 from typing import NamedTuple
 
 
@@ -13,6 +14,7 @@ class VerboseVersionInfo(NamedTuple):
     """Information container for verbose version information."""
 
     release_version: str
+    dist_time: datetime
     url: str = ""
     commit_id: str = ""
     vcs_name: str = ""

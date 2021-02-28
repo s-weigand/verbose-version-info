@@ -34,10 +34,10 @@ Implemented
 - Determine dist time for `pip install .` (needed for better commit_id)
 - get commit id for `pip install .` if `.git` exists, for the closest commit at installation time
 - use find_url_info in vv_info for tarball installation
+- Add dist_mtime time to VerboseVersionInfo
 
 TODO
 
-- Add dist_mtime time to VerboseVersionInfo
 - Add warning if repo of editable install is dirty (`git status -s != ""` )
 - Reset settings function (mostly notebook showoff)
 - setting formatter: Mapping[str, format_function] (used for sha)
