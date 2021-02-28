@@ -35,12 +35,13 @@ Implemented
 - get commit id for `pip install .` if `.git` exists, for the closest commit at installation time
 - use find_url_info in vv_info for tarball installation
 - Add dist_mtime time to VerboseVersionInfo
+- Add warning if repo of source install is dirty (`git status -s != ""` )
 
 TODO
 
-- Add warning if repo of editable install is dirty (`git status -s != ""` )
+- Use a Singleton class instead of dicts for settings
 - Reset settings function (mostly notebook showoff)
-- setting formatter: Mapping[str, format_function] (used for sha)
+- setting formatter: `Mapping[str, format_function]` (used for sha)
 - extract minimal required versions (useful for CI tests, of the min version)
 - export minimal requirements to file (pip or conda style)
 - add conda support

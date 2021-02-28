@@ -104,3 +104,6 @@ ENV/
 
 # IDE settings
 .vscode/
+
+# Test files
+tests/dummy_packages/editable_install_with_dotgit/uncommited_file

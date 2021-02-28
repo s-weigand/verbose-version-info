@@ -7,12 +7,20 @@ from typing import List
 from typing import Optional
 from typing import Tuple
 from typing import Union
+from warnings import warn
 
 from verbose_version_info.data_containers import VcsInfo
+from verbose_version_info.settings import VCS_SETTINGS
 
 VcsCommitIdReader = Callable[[Path, datetime], Optional[VcsInfo]]
 
 VCS_COMMIT_ID_READERS: List[VcsCommitIdReader] = []
+
+
+class UncommitedChangesWarning(UserWarning):
+    """Warning thrown if a director under source control has uncommitted changes."""
+
+    pass
 
 
 def add_vcs_commit_id_reader(func: VcsCommitIdReader) -> VcsCommitIdReader:
@@ -43,6 +51,7 @@ def run_vcs_commit_id_command(
     commit_id_command: Union[List[str], Tuple[str, ...]],
     local_install_basepath: Path,
     need_to_exist_path_child: str = ".",
+    check_dirty_command: Optional[Union[List[str], Tuple[str, ...]]] = None,
 ) -> Optional[VcsInfo]:
     """Inner function of commit_id retrieval functions.
 
@@ -58,6 +67,9 @@ def run_vcs_commit_id_command(
     need_to_exist_path_child : str
         Childitem that needs to exists inside of local_install_basepath.
         E.g. for ``git``: ``".git"``. by default "."
+    check_dirty_command : Optional[Union[List[str], Tuple[str, ...]]]
+        Command to be run for checking if a directory contains uncommitted changes.
+        E.g. for ``git``: ``("git", "status", "-s")``by default None
 
     Returns
     -------
@@ -69,6 +81,19 @@ def run_vcs_commit_id_command(
     get_local_git_commit_id
     """  # noqa: E501
     if (local_install_basepath / need_to_exist_path_child).exists():
+        if check_dirty_command is not None and VCS_SETTINGS["warn_dirty"] is True:
+            is_dirty_output = subprocess.run(
+                check_dirty_command, cwd=local_install_basepath, stdout=subprocess.PIPE
+            )
+            is_dirt = is_dirty_output.stdout.decode().rstrip()
+            if is_dirt != "":
+                warn(
+                    UncommitedChangesWarning(
+                        f"The package installed from source at {local_install_basepath!r}, "
+                        " contains uncommitted changes."
+                    )
+                )
+
         vcs_output = subprocess.run(
             commit_id_command, cwd=local_install_basepath, stdout=subprocess.PIPE
         )
@@ -114,4 +139,5 @@ def local_git_commit_id(local_install_basepath: Path, dist_mtime: datetime) -> O
         ),
         local_install_basepath=local_install_basepath,
         need_to_exist_path_child=".git",
+        check_dirty_command=("git", "status", "-s"),
     )
