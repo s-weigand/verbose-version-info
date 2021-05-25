@@ -11,7 +11,7 @@ repos:
         args: [--remove]
 
   - repo: https://github.com/asottile/pyupgrade
-    rev: v2.16.0
+    rev: v2.18.1
     hooks:
       - id: pyupgrade
         args: [--py36-plus]
@@ -43,7 +43,7 @@ repos:
       - id: mypy
         exclude: "^(docs|tests/dummy_packages)"
   - repo: https://github.com/PyCQA/pydocstyle
-    rev: 6.0.0
+    rev: 6.1.1
     hooks:
       - id: pydocstyle
         exclude: "^(docs|tests|setup.py)"
