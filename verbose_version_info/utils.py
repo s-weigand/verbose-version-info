@@ -78,7 +78,7 @@ class NotFoundDistribution(Distribution):
         str
             SETTINGS["not_found_version_str"]
         """
-        return SETTINGS["not_found_version_str"]  # type: ignore
+        return SETTINGS["not_found_version_str"]  # type: ignore[return-value]
 
     @property
     def files(self) -> list:
