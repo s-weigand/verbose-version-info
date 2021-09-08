@@ -17,7 +17,7 @@ VcsCommitIdReader = Callable[[Path, datetime], Optional[VcsInfo]]
 VCS_COMMIT_ID_READERS: List[VcsCommitIdReader] = []
 
 
-class UncommitedChangesWarning(UserWarning):
+class UncommittedChangesWarning(UserWarning):
     """Warning thrown if a director under source control has uncommitted changes."""
 
     pass
@@ -88,7 +88,7 @@ def run_vcs_commit_id_command(
             is_dirt = is_dirty_output.stdout.decode().rstrip()
             if is_dirt != "":
                 warn(
-                    UncommitedChangesWarning(
+                    UncommittedChangesWarning(
                         f"The package installed from source at {local_install_basepath!r}, "
                         " contains uncommitted changes."
                     )

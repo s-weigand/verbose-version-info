@@ -14,7 +14,7 @@ from tests import MTIME_DATE_PAST
 import verbose_version_info.vcs
 from verbose_version_info.data_containers import VcsInfo
 from verbose_version_info.settings import VCS_SETTINGS
-from verbose_version_info.vcs import UncommitedChangesWarning
+from verbose_version_info.vcs import UncommittedChangesWarning
 from verbose_version_info.vcs import add_vcs_commit_id_reader
 from verbose_version_info.vcs import local_git_commit_id
 from verbose_version_info.vcs import run_vcs_commit_id_command
@@ -75,7 +75,7 @@ def test_local_git_commit_id(
 def test_local_git_commit_id_uncommited_changes(dirty_vsc_path: Path):
     """Warning if uncommitted changes are present."""
 
-    with pytest.warns(UncommitedChangesWarning, match="contains uncommitted changes"):
+    with pytest.warns(UncommittedChangesWarning, match="contains uncommitted changes"):
         local_git_commit_id(dirty_vsc_path, MTIME_DATE_PAST)
 
 
@@ -87,7 +87,7 @@ def test_local_git_commit_id_uncommited_changes_warning_deactivated(
 
     monkeypatch.setitem(VCS_SETTINGS, "warn_dirty", False)
 
-    with pytest.warns(UncommitedChangesWarning, match="contains uncommitted changes"):
+    with pytest.warns(UncommittedChangesWarning, match="contains uncommitted changes"):
         local_git_commit_id(dirty_vsc_path, MTIME_DATE_PAST)
 
 
