@@ -83,7 +83,7 @@ jobs:
           py.test
       - name: Codecov Upload
         continue-on-error: true
-        uses: codecov/codecov-action@v2.0.3
+        uses: codecov/codecov-action@v2
         with:
           file: ./coverage.xml
           name: ${{ matrix.os }}-py${{ matrix.python-version }}
