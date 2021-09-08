@@ -2,11 +2,12 @@
 # pinned so the bot can create PRs to test with new versions
 
 ## install_requires
-importlib_metadata==3.4.0
+importlib_metadata==3.4.0;python_version < '3.8'
 
 ## extras_require
 ### cli
-Click==7.1.2
+typer==0.4.0
+rich==10.9.0
 
 
 # Development
