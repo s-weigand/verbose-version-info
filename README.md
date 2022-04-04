@@ -10,7 +10,6 @@
 [![Documentation Status](https://readthedocs.org/projects/verbose-version-info/badge/?version=latest)](https://verbose-version-info.readthedocs.io/en/latest/?badge=latest)
 [![codecov](https://codecov.io/gh/s-weigand/verbose-version-info/branch/main/graph/badge.svg)](https://codecov.io/gh/s-weigand/verbose-version-info)
 [![Documentation Coverage](https://raw.githubusercontent.com/s-weigand/verbose-version-info/main/docs/_static/interrogate_badge.svg)](https://github.com/s-weigand/verbose-version-info)
-[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=s-weigand/verbose-version-info)](https://dependabot.com)
 
 [![All Contributors](https://img.shields.io/github/all-contributors/s-weigand/verbose-version-info)](#contributors)
 [![Code style Python: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)

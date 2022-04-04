@@ -6,7 +6,7 @@ importlib_metadata==3.4.0;python_version < '3.8'
 
 ## extras_require
 ### cli
-typer==0.4.0
+typer==0.4.1
 rich==10.9.0
 
 
@@ -31,14 +31,3 @@ coverage>=4.5.1
 pytest>=4.0.0
 pytest-cov>=2.5.1
 tox>=3.5.2
-
-### dummy distributions for testing
-git+https://github.com/s-weigand/git-install-test-distribution.git
--e tests/dummy_packages/editable_install_setup_cfg
--e tests/dummy_packages/editable_install_setup_py
--e tests/dummy_packages/editable_install_src_pattern
--e tests/dummy_packages/editable_install_with_dotgit
-tests/dummy_packages/local_install
-tests/dummy_packages/local_install_src_pattern
-tests/dummy_packages/local_install_with_dotgit
-https://github.com/s-weigand/tarball-test-distribution/archive/main.zip
