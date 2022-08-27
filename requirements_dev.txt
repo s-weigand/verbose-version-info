@@ -6,7 +6,7 @@ importlib_metadata==3.4.0;python_version < '3.8'
 
 ## extras_require
 ### cli
-typer==0.4.1
+typer==0.6.1
 rich==12.4.4
 
 
@@ -30,4 +30,5 @@ pydocstyle>=5.0.2
 coverage>=4.5.1
 pytest>=4.0.0
 pytest-cov>=2.5.1
+pytest-env>=0.6.2
 tox>=3.5.2
