@@ -30,4 +30,5 @@ pydocstyle>=5.0.2
 coverage>=4.5.1
 pytest>=4.0.0
 pytest-cov>=2.5.1
+pytest-env>=0.6.2
 tox>=3.5.2
