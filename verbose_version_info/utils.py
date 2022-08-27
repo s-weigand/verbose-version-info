@@ -62,10 +62,7 @@ class NotFoundDistribution(Distribution):
         PathLike
             Just the initial ``path`` ensure to be type ``PathLike``.
         """
-        if isinstance(path, str):
-            return Path(path)
-        else:
-            return path
+        return Path(path) if isinstance(path, str) else path
 
     @property
     def version(self) -> str:
@@ -153,9 +150,7 @@ def dist_files(
         Paths of files used by the package.
     """
     dist_files = distribution(distribution_name).files
-    if dist_files is not None:
-        return dist_files
-    return []
+    return dist_files if dist_files is not None else []
 
 
 def _datetime_now() -> datetime:
