@@ -42,6 +42,7 @@ repos:
     rev: v2.2.0
     hooks:
       - id: setup-cfg-fmt
+        args: ["--include-version-classifiers"]
 
   - repo: https://github.com/pycqa/flake8
     rev: 6.0.0
