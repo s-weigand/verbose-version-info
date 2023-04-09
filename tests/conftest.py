@@ -14,7 +14,6 @@ import verbose_version_info.resource_finders
 @pytest.fixture
 def mock_os_stat_mtime(monkeypatch: MonkeyPatch):
     def mock_func(date_obj: datetime):
-
         timestamp = int(date_obj.timestamp())
 
         # Prevent max recursion error

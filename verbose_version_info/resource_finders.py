@@ -137,8 +137,10 @@ def egg_link_lines(distribution_name: str) -> Optional[List[str]]:
     find_editable_install_basepath
     """
     distribution_name = distribution(distribution_name).metadata.get(  # type:ignore[attr-defined]
-        "name"
+        "name", ""
     )
+    if distribution_name == "":
+        return None
     for path_item in sys.path:
         egg_link = os.path.join(path_item, f"{distribution_name}.egg-link")
         if os.path.isfile(egg_link):

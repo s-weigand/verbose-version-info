@@ -1,13 +1,13 @@
 """Tests for verbose_version_info.utils"""
 
+from importlib.metadata import Distribution
+from importlib.metadata import distribution as _distribution
 from pathlib import Path
 
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
 
 import verbose_version_info.utils
-from verbose_version_info.metadata_compat import Distribution
-from verbose_version_info.metadata_compat import _distribution
 from verbose_version_info.utils import NotFoundDistribution
 from verbose_version_info.utils import dist_files
 from verbose_version_info.utils import distribution

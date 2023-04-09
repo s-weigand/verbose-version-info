@@ -1,8 +1,6 @@
 # Runtime Requirements
 # pinned so the bot can create PRs to test with new versions
 
-## install_requires
-importlib_metadata==3.4.0;python_version < '3.8'
 
 ## extras_require
 ### cli
