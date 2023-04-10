@@ -1,4 +1,5 @@
 from datetime import datetime
+from importlib.metadata import PackagePath
 from pathlib import Path
 from typing import Callable
 
@@ -11,7 +12,6 @@ from tests import PKG_ROOT
 
 import verbose_version_info.utils
 from verbose_version_info.data_containers import VerboseVersionInfo
-from verbose_version_info.metadata_compat import PackagePath
 from verbose_version_info.resource_finders import dist_info_mtime
 from verbose_version_info.resource_finders import egg_link_lines
 from verbose_version_info.resource_finders import file_uri_to_path
