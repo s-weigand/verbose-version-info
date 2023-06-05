@@ -5,7 +5,7 @@
 ## extras_require
 ### cli
 typer==0.7.0
-rich==13.3.5
+rich==13.4.1
 
 
 # Development
