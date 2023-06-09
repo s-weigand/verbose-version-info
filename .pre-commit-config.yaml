@@ -11,7 +11,7 @@ repos:
         args: [--remove]
 
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.3.2
+    rev: v3.4.0
     hooks:
       - id: pyupgrade
         args: [--py36-plus]
@@ -39,7 +39,7 @@ repos:
       - id: prettier
 
   - repo: https://github.com/asottile/setup-cfg-fmt
-    rev: v2.2.0
+    rev: v2.3.0
     hooks:
       - id: setup-cfg-fmt
         args: ["--include-version-classifiers"]
@@ -51,7 +51,7 @@ repos:
         additional_dependencies: [flake8-comprehensions, flake8-2020]
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.2.0
+    rev: v1.3.0
     hooks:
       - id: mypy
         exclude: "^(docs|tests/dummy_packages)"
