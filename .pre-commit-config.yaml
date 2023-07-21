@@ -11,7 +11,7 @@ repos:
         args: [--remove]
 
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.4.0
+    rev: v3.9.0
     hooks:
       - id: pyupgrade
         args: [--py36-plus]
@@ -22,24 +22,24 @@ repos:
       - id: isort
 
   - repo: https://github.com/python/black
-    rev: 23.3.0
+    rev: 23.7.0
     hooks:
       - id: black
         language_version: python3
 
   - repo: https://github.com/asottile/yesqa
-    rev: v1.4.0
+    rev: v1.5.0
     hooks:
       - id: yesqa
         additional_dependencies: [flake8-docstrings]
 
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v3.0.0-alpha.9-for-vscode # Use the sha or tag you want to point at
+    rev: v3.0.0 # Use the sha or tag you want to point at
     hooks:
       - id: prettier
 
   - repo: https://github.com/asottile/setup-cfg-fmt
-    rev: v2.3.0
+    rev: v2.4.0
     hooks:
       - id: setup-cfg-fmt
         args: ["--include-version-classifiers"]
@@ -51,7 +51,7 @@ repos:
         additional_dependencies: [flake8-comprehensions, flake8-2020]
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.3.0
+    rev: v1.4.1
     hooks:
       - id: mypy
         exclude: "^(docs|tests/dummy_packages)"
@@ -96,7 +96,7 @@ repos:
       - id: rst-inline-touching-normal
 
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.2.4
+    rev: v2.2.5
     hooks:
       - id: codespell
         types: [file]
