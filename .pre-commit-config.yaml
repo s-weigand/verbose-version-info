@@ -77,7 +77,7 @@ repos:
         pass_filenames: false
 
   - repo: https://github.com/myint/rstcheck
-    rev: "v6.2.5"
+    rev: "v6.3.0"
     hooks:
       - id: rstcheck
         additional_dependencies: [sphinx]
