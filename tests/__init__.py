@@ -1,4 +1,5 @@
 """Unit test package for verbose_version_info."""
+
 from datetime import datetime
 from pathlib import Path
 

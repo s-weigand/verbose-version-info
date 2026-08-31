@@ -1,4 +1,5 @@
 """Tests for the CLI"""
+
 import re
 import sys
 

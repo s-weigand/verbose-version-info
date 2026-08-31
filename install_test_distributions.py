@@ -6,6 +6,7 @@ which I can't get to be installed with ``requirements_dev.txt`` alone.
 The ones that could be installed via ``requirements_dev.txt`` need to be installed here
 for dependabot to work properly.
 """
+
 import subprocess
 from pathlib import Path
 from tempfile import TemporaryDirectory
