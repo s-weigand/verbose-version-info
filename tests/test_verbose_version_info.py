@@ -1,4 +1,5 @@
 """Tests for ``verbose_version_info`` package."""
+
 from datetime import datetime
 from typing import Callable
 

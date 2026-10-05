@@ -1,4 +1,5 @@
 """Module containing all settings related functionalities."""
+
 from copy import copy
 
 DEFAULT_VCS_SETTINGS = {"warn_dirty": True}
