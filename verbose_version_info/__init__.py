@@ -1,4 +1,5 @@
 """Top-level package for verbose-version-info."""
+
 from verbose_version_info.settings import SETTINGS
 
 __author__ = """Sebastian Weigand"""

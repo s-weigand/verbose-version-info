@@ -1,6 +1,5 @@
 """Utility modules with convenience functions."""
 
-
 from datetime import datetime
 from functools import lru_cache
 from importlib.metadata import Distribution
